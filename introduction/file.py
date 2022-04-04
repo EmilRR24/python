@@ -83,4 +83,4 @@ print(person['favorite_team']) # - KeyError: 'favorite_team'
 print(pizza_toppings[7]) # - IndexError: list index out of range
   print(boolean) # - IndentationError: unexpected indent
 fruit.append('raspberry') # - AttributeError: 'tuple' object has no attribute 'append'
-fruit.pop(1) #     - delete value at index 1
+fruit.pop(1) #  - delete value at index 1-
