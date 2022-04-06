@@ -49,14 +49,31 @@ function freqTable(str) {
 function encodeStr(str) {
     var table = freqTable(str);
     let returnStr = "";
-    if (str.length <= 4) {
+    const castArray = [Object.entries(table)];
+    returnStr = castArray.toString();
+    returnStr = returnStr.replace(/,/g, "");
+    if (returnStr.length <= str.length) {
         return str;
     } 
     else {
-        const castArray = [Object.entries(table)];
-        returnStr = castArray.toString();
-        returnStr = returnStr.replace(/,/g, "");
         return returnStr;
+    }
+}
+console.log(encodeStr(str4));
+
+function encodeStr(str) {
+    let fb = freqTable(str)
+    let fbStr = ""
+    for (let k in fb) {
+        fbStr += k;
+        fbStr += String(fb[k]);
+    }
+
+    if(str.length <= fbStr.length) {
+        return str
+    }
+    else {
+        return fbStr
     }
 }
 console.log(encodeStr(str4));
