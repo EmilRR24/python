@@ -19,7 +19,7 @@ class BankAccount:
             self.balance -= 5
         return self
     def display_account_info(self):
-        print(f"{self.balance}")
+        print(self.balance)
     def yield_interest(self):
         if self.balance > 0:
             interest = self.balance * self.int_rate
