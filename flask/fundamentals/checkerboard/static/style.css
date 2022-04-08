@@ -1,0 +1,26 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    text-align: center;
+}
+h1{
+    margin: 25px;
+}
+.row, .column{
+    display: flex;
+    justify-content: center;
+}
+#box1, #box2{
+    display: inline-flex;
+    width: 100px;
+    height: 100px;
+    margin: 0;
+}
+/* #box1{
+    background-color:red
+}
+#box2{
+    background-color:black
+} */
