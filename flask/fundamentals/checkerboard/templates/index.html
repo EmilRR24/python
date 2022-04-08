@@ -16,30 +16,30 @@
                     <div class="column">
                         {% for i in range(row): %}
                             {% if i%2 == 1 %}
-                            <div class="row">
-                                <div class="col-sm" id="box1" style="background-color: {{color1}};"></div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm" id="box1" style="background-color: {{color1}};"></div>
+                                </div>
                             {% else %}
-                            <div class="row">
-                                <div class="col-sm" id="box2" style="background-color: {{color2}};"></div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm" id="box2" style="background-color: {{color2}};"></div>
+                                </div>
                             {% endif %}
                         {% endfor %}
                     </div>
                 {% else %}
                     <div class="column">
-                    {% for i in range(row): %}
-                        {% if i%2 == 1 %}
-                            <div class="row">
-                                <div class="col-sm" id="box2" style="background-color: {{color2}};"></div>
-                            </div>
-                        {% else %}
-                            <div class="row">
-                                <div class="col-sm" id="box1" style="background-color: {{color1}};"></div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                        {% for i in range(row): %}
+                            {% if i%2 == 1 %}
+                                <div class="row">
+                                    <div class="col-sm" id="box2" style="background-color: {{color2}};"></div>
+                                </div>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-sm" id="box1" style="background-color: {{color1}};"></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 {% endif %}
             {% endfor %}
         </div>
