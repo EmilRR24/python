@@ -14,6 +14,8 @@ def create_user():
     session['location'] = request.form['location']
     session['languages'] = request.form['languages']
     session['comment'] = request.form['comment']
+    session['sex'] = request.form['sex']
+    session['student'] = request.form['student']
     return redirect('/result')
 
 @app.route('/result')
