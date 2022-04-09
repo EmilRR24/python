@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    padding: 50px;
+}
+.page_container{
+    width: 620px;
+    height: 620px;
+    background-color: rgb(53, 59, 83);
+    padding-top: 15px;
+}
+.form{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+h1{
+    text-align: center;
+    color: rgb(255, 221, 0);
+}
+form{
+    width: 600px;
+    height: 500px;
+    border: 3px solid black;
+    padding: 20px;
+}
+.name, .location, .languages{
+    display: flex;
+    justify-content:space-between;
+    margin: 10px 0;
+}
+input, select{
+    width: 300px;
+}
+.name, .location, .languages, .comment{
+    color: white;
+}
+.submit{
+    text-align: center;
+    margin-top: 10px;
+    /* width: 100px; */
+}
+.submit > input{
+    padding:5px 20px;
+    background-color:rgb(255, 221, 0);
+    text-decoration: none;
+    color: black;
+    width: 120px;
+    box-shadow: 3px 3px black;
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+</head>
+<body>
+    {{session}}
+    <h1>Counter</h1>
+    <h2>Count: {{session['count']}}</h2>
+    <div class="line1">
+        <a href="/up">up</a>
+        <a href="/down">down</a>
+        <a href="/destroy_session">reset</a>
+    </div>
+    <div class="line2">
+        <a href="/up_2">up +2</a>
+    </div>
+    
+</body>
+</html>
