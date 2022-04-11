@@ -1,5 +1,5 @@
 
-const frequencyTableBuilder = require("./freqTable").frequencyTableBuilder
+const frequencyTableBuilder = require("./freq_table").frequencyTableBuilder
   // https://app.codility.com/programmers/lessons/2-arrays/odd_occurrences_in_array/
 
 /* 
@@ -21,6 +21,15 @@ const nums4 = [5, 2, 6, 2, 3, 1, 6, 3, 2, 5, 2];
 const expected4 = 1;
 
 function oddOccurrencesInArray(nums) {
-    var num = 
-    
+  let freqTable = frequencyTableBuilder(nums)
+  for(let key in freqTable) {
+    if (freqTable[key] % 2){
+      return key
+    }
+  }
+
 }
+console.log(oddOccurrencesInArray(num1))
+console.log(oddOccurrencesInArray(num2))
+console.log(oddOccurrencesInArray(num3))
+console.log(oddOccurrencesInArray(num4))

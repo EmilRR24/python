@@ -33,10 +33,21 @@ const expected3 = {};
  *    from the given arr and the values are the amnt of times that item occurs.
  */
 function frequencyTableBuilder(arr) {
-  // create an empty object to hold the count key will be the array element value will be the elements count
-  // loop through the array 
-    // check if the key is in the object
-    // if not add to the object
-    // if it is add to the count
-  //return the object
+// create an empty object to hold the count key will be the array element value will be the elements count
+var newObject = {};
+// loop through the array 
+    for (var key = 0; key < arr.length; key++) {
+        if(newObject[arr[key]]){
+            newObject[arr[key]]++
+        }
+        else{
+            newObject[arr[key]] = 1
+        }
+    }
+        // check if the key is in the object
+
+return newObject
+// if not add to the object
+// return the object
 }
+console.log(frequencyTableBuilder(arr2))
