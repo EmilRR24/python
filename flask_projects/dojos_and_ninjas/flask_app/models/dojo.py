@@ -32,11 +32,11 @@ class Dojo:
         result = connectToMySQL(DATABASE).query_db( query, data )
         return result
 
-        @classmethod
-        def get_one(cls,data:dict) -> object:
-            query  = "SELECT * FROM dojos WHERE id = %(id)s";
-            result = connectToMySQL(DATABASE).query_db(query,data)
-            return cls(result[0])
+    @classmethod
+    def get_one(cls,data:dict) -> object:
+        query  = "SELECT * FROM dojos WHERE id = %(id)s";
+        result = connectToMySQL(DATABASE).query_db(query,data)
+        return cls(result[0])
 
     @classmethod
     def get_one_with_ninjas(cls, data ):
