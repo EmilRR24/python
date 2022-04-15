@@ -4,13 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>.container{display: flex; justify-content:space-around; align-items:center}</style>
     <title>Dojos and Ninjas</title>
 </head>
 <body>
     <div class="container">
-        <h1>All Dojos</h1>
-        {{dojos}}
-        <a href="/ninjas">All Ninjas</a>
+        <div class="newDojo">
+            <h2>New Dojo</h2>
+            <form action="/create_dojo" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" name="name">
+                <input type="submit" value="Create">
+            </form>
+        </div>
+        <div class="allDojo">
+            <h1>All Dojos</h1>
+            {% for dojo in dojos %}
+            <a href="/show/{{ dojo.id }}">{{ dojo.name}}</a>
+            {% endfor %}
+        </div>
+        <a href="/ninjas">Add Ninja</a>
     </div>
 </body>
 </html>

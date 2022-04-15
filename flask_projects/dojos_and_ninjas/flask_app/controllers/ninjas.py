@@ -1,45 +1,32 @@
 from flask import render_template, request, redirect
 from flask_app import app
 from flask_app.models.ninja import Ninja
+from flask_app.models.dojo import Dojo
 
 
-@app.route('/ninjas')
-def index_ninjas():
-    ninjas = Ninja.get_all()
-    return render_template('indexNinjas.html', ninjas = ninjas)
-
-@app.route('/show_ninjas')
-def show_ninjas():
-    ninjas = Ninja.get_all()
-    return render_template('showNinjas.html', ninjas = ninjas)
-
-@app.route('/show_ninja/<int:id>')
-def show_ninja(id):
-    data = {'id': id}
-    Ninja.get_one(data)
-    return render_template('/showNinja.html', ninja = Ninja.get_one(data))
-
-@app.route('/delete_ninja/<int:id>')
-def delete_ninja(id):
-    data = {'id': id}
-    Ninja.delete(data)
-    return redirect('/ninjas')
 
 @app.route('/create_ninja', methods=['POST'])
 def create_ninja():
-    id = Ninja.save(request.form)
-    return redirect(f"/showNinja/{id}" )
+    Ninja.save(request.form)
+    data = request.form.get('dojo_id')
+    print(data)
+    return redirect(f'/show/{data}')
 
+@app.route('/ninjas')
+def index_ninjas():
+    return render_template('indexNinjas.html', dojos = Dojo.get_all())
 
-@app.route('/update_ninja/<int:id>')
-def update_ninja(id):
+@app.route('/show/<int:id>')
+def show_dojo(id):
     data = {'id': id}
-    return render_template('update_ninja.html', user = Ninja.get_one(data))
+    return render_template('showDojo.html', dojo = Dojo.get_one_with_ninjas(data))
 
-@app.route('/update_ninja2/<int:id>', methods=['POST'])
-def update_ninja2(id):
-    print(request.form)
-    data = {"first_name":request.form['first_name'],
-    "last_name":request.form['last_name'], "email":request.form['email'], "id": id }
-    Ninja.update(data)
-    return redirect(f"/showNinja/{id}")
+@app.route('/dojos')
+def index_dojos():
+    dojos = Dojo.get_all()
+    return render_template('indexDojos.html', dojos = dojos)
+
+@app.route('/create_dojo', methods=['POST'])
+def create_dojo():
+    Dojo.save(request.form)
+    return redirect('/dojos')

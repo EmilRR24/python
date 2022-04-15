@@ -11,8 +11,22 @@
 </head>
 <body>
     <div class="container">
-        {{ninjas}}
-        <a href="/">HOME</a>
+        <form action="/create_ninja" method="POST">
+            <label for="dojo">Dojo: </label>
+            <select name="dojo_id" id="dojo_select">
+                {% for dojo in dojos %}
+                <option value="{{dojo.id}}" name="dojo">{{ dojo.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="first_name">First Name: </label>
+            <input type="text" name="first_name">
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name">
+            <label for="age">Age:</label>
+            <input type="text" name="age">
+            <input type="submit" value="Create">
+        </form>
+        <a href="/dojos">HOME</a>
     </div>
 </body>
 </html>

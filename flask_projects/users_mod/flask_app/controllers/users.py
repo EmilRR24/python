@@ -16,7 +16,6 @@ def show():
 @app.route('/show_user/<int:id>')
 def show_user(id):
     data = {'id': id}
-    User.get_one(data)
     return render_template('/show_user.html', user = User.get_one(data))
 
 @app.route('/delete/<int:id>')
