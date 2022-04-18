@@ -41,8 +41,14 @@ class User:
         if len(user['first_name']) < 2:
             flash("First name must be at least 2 characters.")
             is_valid = False
+        if not (user['first_name'].isalpha()):
+            flash("First name must be letters!")
+            is_valid = False
         if len(user['last_name']) < 2:
             flash("Last name must be at least 2 characters.")
+            is_valid = False
+        if not (user['last_name'].isalpha()):
+            flash("Last name must be letters")
             is_valid = False
         if len(user['password']) < 8:
             flash("Password must be at least 8 characters.")
@@ -75,7 +81,7 @@ class User:
     # ! UPDATE
     @classmethod
     def update(cls,data:dict) -> int:
-        query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,password=%(password)s,password_confirm=%(password_confirm)s,updated_at=NOW() WHERE id = %(id)s;"
+        query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,password=%(password)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
 
     # ! DELETE
