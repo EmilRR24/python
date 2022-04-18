@@ -1,18 +1,18 @@
 # Flask Checklist
 
-- [x] create a separate directory for each app.
-- [x] inside the directory for the app, run:
+- [ ] create a separate directory for each app.
+- [ ] inside the directory for the app, run:
 
 ```bash
 pipenv install flask=='2.0.3' pymysql
 ```
-- [x] activate the virtual environment and install bcrypt:
+- [ ] activate the virtual environment and install bcrypt:
 
 ```bash
 pipenv shell
 pipenv install werkzeug==2.0.3 flask==2.0.3 flask-bcrypt
 ```
-- [x] add [server.py](server.py) with the following content:
+- [ ] add [server.py](server.py) with the following content:
 
 ```py
 from flask_app import app
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
-- [x] add [flask_app](./flask_app/__init__.py) with the `__init__.py` file that contains the following:
+- [ ] add [flask_app](./flask_app/__init__.py) with the `__init__.py` file that contains the following:
 
 ```py
 from flask import Flask, session
@@ -30,7 +30,7 @@ from flask import Flask, session
 app = Flask(__name__)
 ```
 
-- [x] add [mysqlconnection.py](./flask_app/config/mysqlconnection.py) to the `config` directory inside the `flask_app` package. It should contain the following:
+- [ ] add [mysqlconnection.py](./flask_app/config/mysqlconnection.py) to the `config` directory inside the `flask_app` package. It should contain the following:
 
 ```py
 import pymysql.cursors
@@ -52,7 +52,7 @@ class MySQLConnection:
             try:
                 query = cursor.mogrify(query, data)
                 print("Running Query:", query)
-                executable = cursor.execute(query, data)
+                e ecutable = cursor.e ecute(query, data)
                 if query.lower().find("insert") >= 0:
                     self.connection.commit()
                     return cursor.lastrowid
@@ -61,7 +61,7 @@ class MySQLConnection:
                     return result
                 else:
                     self.connection.commit()
-            except Exception as e:
+            e cept E ception as e:
                 print("Something went wrong", e)
                 return False
             finally:
@@ -71,14 +71,14 @@ def connectToMySQL(db):
     return MySQLConnection(db)
 ```
 
-- [x] add the models for the application inside the `models` directory. Each non-relational table in the database should have a [model](flask_app/models/model.py). A generic model should look like this:
+- [ ] add the models for the application inside the `models` directory. Each non-relational table in the database should have a [model](flask_app/models/model.py). A generic model should look like this:
 
 ```py
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
-import re    # the regex module
-# create a regular expression object that we'll use later   
-EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
+import re    # the rege  module
+# create a regular e pression object that we'll use later   
+EMAIL_REGE  = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
 DATABASE = 'checklist' # enter the name of the database you want to use
 
@@ -123,7 +123,7 @@ class Model:
         if user['password'] != user['password_confirm']:
             flash("Passwords do not match.")
             is_valid = False
-        if not EMAIL_REGEX.match(user['email']):
+        if not EMAIL_REGE .match(user['email']):
             flash("Invalid email address!")
             is_valid = False
         return is_valid
@@ -166,13 +166,15 @@ class Model:
 
 ```
 
-- [x] add the controllers for the app routes inside [flask_app/controllers/models.py](flask_app/controllers/models.py):
+- [ ] add the controllers for the app routes inside [flask_app/controllers/models.py](flask_app/controllers/models.py):
 ```py
 
 from flask import render_template, request, redirect, session, flash
 from flask_app import app
 app.secret_key = 'keep it secret, keep it safe' # set a secret key for security purposes
-from flask_bcrypt import Bcrypt      
+from flask_bcrypt import Bcrypt     
+bcrypt = Bcrypt(app)     # we are creating an object called bcrypt, 
+                         # which is made by invoking the function Bcrypt with our app as an argument 
 from flask_app.models.model import Model
 
 # ! ////// REGISTER WITH BCRYPT  //////
@@ -236,7 +238,7 @@ def create():
 # ! ////// READ/RETRIEVE //////
 # TODO ROOT ROUTE
 @app.route('/')
-def index():
+def inde ():
     return redirect('/models')
 
 # TODO READ ALL
@@ -278,7 +280,7 @@ def destroy(id):
     return redirect('/models')
 ```
 
-- [x] add the view of MVC:
+- [ ] add the view of MVC:
   - [ ] add [models.html](flask_app/templates/models.html):
 
 ```html
@@ -286,14 +288,14 @@ def destroy(id):
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=" -UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>models</title>
 </head>
 <body>
-    <h1 class="text-center">Here are our models!!!</h1>
+    <h1 class="te t-center">Here are our models!!!</h1>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -325,14 +327,14 @@ def destroy(id):
 </html>
 ```
 
-  - [x] add [new_model.html](flask_app/templates/new_model.html):
+  - [ ] add [new_model.html](flask_app/templates/new_model.html):
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=" -UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -348,19 +350,19 @@ def destroy(id):
     {% endif %}
     {% endwith %}
 
-    <form action="/model/create" method="post" class="col-6 mx-auto">
-        <h2 class="text-center">Add model</h2>
+    <form action="/model/create" method="post" class="col-6 m -auto">
+        <h2 class="te t-center">Add model</h2>
         <div class="form-group">
             <label for="column1">column1:</label>
-            <input type="text" name="column1"  class="form-control">
+            <input type="te t" name="column1"  class="form-control">
         </div>
         <div class="form-group">
             <label for="column2">column2:</label>
-            <input type="text" name="column2"  class="form-control">
+            <input type="te t" name="column2"  class="form-control">
         </div>
         <div class="form-group">
             <label for="column3">column3:</label>
-            <input type="text" name="column3"  class="form-control">
+            <input type="te t" name="column3"  class="form-control">
         </div>
         <input type="submit" value="Add model" class="btn btn-success">
     </form>
@@ -368,20 +370,20 @@ def destroy(id):
 </html>
 ```
 
-  - [x] add [show_model.html](flask_app/templates/show_model.html):
+  - [ ] add [show_model.html](flask_app/templates/show_model.html):
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=" -UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>model</title>
 </head>
 <body>
-    <h2 class="text-center">model {{model.id}}</h2>
+    <h2 class="te t-center">model {{model.id}}</h2>
     <p>column1 {{model.column1}}</p>
     <p>column2: {{model.column2}}</p>
     <p>column3: {{model.column3}}</p>
@@ -392,14 +394,14 @@ def destroy(id):
 </html>
 ```
 
-  - [x] add [edit_model.html](flask_app/templates/edit_model.html):
+  - [ ] add [edit_model.html](flask_app/templates/edit_model.html):
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=" -UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -407,20 +409,20 @@ def destroy(id):
 </head>
 <body>
 
-    <form action="/model/update" method="post" class="col-6 mx-auto">
-        <h2 class="text-center">Edit {{model.id}}</h2>
+    <form action="/model/update" method="post" class="col-6 m -auto">
+        <h2 class="te t-center">Edit {{model.id}}</h2>
         <input type="hidden" name="id" value={{model.id}}>
         <div class="form-group">
             <label for="column1">column1:</label>
-            <input type="text" name="column1"  class="form-control" value="{{model.column1}}">
+            <input type="te t" name="column1"  class="form-control" value="{{model.column1}}">
         </div>
         <div class="form-group">
             <label for="column2">column2:</label>
-            <input type="text" name="column2" class="form-control" value="{{model.column2}}">
+            <input type="te t" name="column2" class="form-control" value="{{model.column2}}">
         </div>
         <div class="form-group">
             <label for="column3">column3:</label>
-            <input type="text" name="column3"  class="form-control" value="{{model.column3}}">
+            <input type="te t" name="column3"  class="form-control" value="{{model.column3}}">
         </div>
         <input type="submit" value="Update model" class="btn btn-success">
     </form>

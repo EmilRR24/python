@@ -1,19 +1,22 @@
+from unittest import result
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 import re    # the regex module
 # create a regular expression object that we'll use later   
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
-DATABASE = 'checklist' # enter the name of the database you want to use
+DATABASE = 'cookbook' # enter the name of the database you want to use
 
-class Model:
+class User:
     def __init__(self, data:dict) -> None:
         self.id = data['id']
-        self.column1 = data['column1']
-        self.column2 = data['column2']
-        self.column3 = data['column3']
+        self.first_name = data['first_name']
+        self.last_name = data['last_name']
+        self.email = data['email']
+        self.password = data['password']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.recipes = []
 
     # ! USER VALIDATIONS
     @classmethod
@@ -55,35 +58,55 @@ class Model:
     # ! CREATE
     @classmethod
     def save(cls, data:dict) -> int:
-        query = "INSERT INTO models (column1,column2,column3) VALUES (%(column1)s,%(column2)s,%(column3)s);"
+        query = "INSERT INTO users (first_name,last_name,email,password) VALUES (%(first_name)s,%(last_name)s,%(email)s,%(password)s);"
         result = connectToMySQL(DATABASE).query_db(query,data)
         return result
 
     # ! READ/RETRIEVE ALL
     @classmethod
     def get_all(cls) -> list:
-        query = "SELECT * FROM models;"
+        query = "SELECT * FROM users;"
         results = connectToMySQL(DATABASE).query_db(query)
-        models = []
+        users = []
         for u in results:
-            models.append( cls(u) )
-        return models
+            users.append( cls(u) )
+        return users
     
+    # ! READ/RETRIEVE LEFT JOIN
+    @classmethod
+    def get_one_with_recipes(cls, data ):
+        query = "SELECT * FROM users LEFT JOIN recipes ON users.id = recipes.user_id WHERE users.id=%(id)s;"
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        print(results)
+        user = [cls(results[0])]
+        for recipe in results:
+            recipe_data = {
+            'id': recipe['recipes.id'],
+            'name':recipe['name'],
+            'cooktime':recipe['recipes.cooktime'],
+            'description':recipe['description'],
+            'instruction':recipe['instruction'],
+            'date_made':recipe['recipes.date_made'],
+            'user_id':recipe['user_id']
+            }
+            user.recipes.append(Recipe(recipe_data))
+        return user
+
     # ! READ/RETRIEVE ONE
     @classmethod
     def get_one(cls,data:dict) -> object:
-        query  = "SELECT * FROM models WHERE id = %(id)s";
+        query  = "SELECT * FROM users WHERE id = %(id)s";
         result = connectToMySQL(DATABASE).query_db(query,data)
         return cls(result[0])
 
     # ! UPDATE
     @classmethod
     def update(cls,data:dict) -> int:
-        query = "UPDATE models SET column1=%(column1)s,column2=%(column2)s,column3=%(column3)s,updated_at=NOW() WHERE id = %(id)s;"
+        query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
 
     # ! DELETE
     @classmethod
     def destroy(cls,data:dict):
-        query  = "DELETE FROM models WHERE id = %(id)s;"
+        query  = "DELETE FROM users WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)

@@ -91,7 +91,7 @@ class Model:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
-    # ! USER VALIDATIONS
+    # ! VALIDATIONS
     @classmethod
     def get_by_email(cls,data:dict) -> object or bool:
         query = "SELECT * FROM users WHERE email = %(email)s;"
