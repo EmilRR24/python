@@ -29,7 +29,6 @@ class Ninja:
     def save(cls, data ):
         print(data)
         query = "INSERT INTO ninjas ( first_name , last_name , age , created_at, updated_at, dojo_id ) VALUES ( %(first_name)s , %(last_name)s , %(age)s , NOW() , NOW(), %(dojo_id)s  );"
-        # data is a dictionary that will be passed into the save method from server.py
         result = connectToMySQL(DATABASE).query_db( query, data )
         return result
 
