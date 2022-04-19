@@ -51,7 +51,7 @@ class Recipe:
     # ! CREATE
     @classmethod
     def save_recipe(cls, data:dict) -> int:
-        query = "INSERT INTO recipes (name,cooktime,description, instruction, date_made, user_id) VALUES (%(name)s,%(cooktime)s,%(description)s, %(instruction)s, %(date_made)s), %(session['user_id'])s;"
+        query = "INSERT INTO recipes (name, cooktime, description, instruction, date_made, user_id) VALUES (%(name)s,%(cooktime)s,%(description)s, %(instruction)s, %(date_made)s, %(user_id)s;)"
         result = connectToMySQL(DATABASE).query_db(query,data)
         print(result)
         return result
