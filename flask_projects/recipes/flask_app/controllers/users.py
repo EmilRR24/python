@@ -81,7 +81,7 @@ def index():
 # TODO READ ALL
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard.html", recipes = Recipe.get_all())
+    return render_template("dashboard.html", recipes = Recipe.get_all_with_users())
 
 # TODO READ ONE
 @app.route('/recipe/show/<int:id>')

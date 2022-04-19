@@ -10,8 +10,14 @@
 </head>
 <body>
     <div class="container">
-        <p>If you are logged in <a href="/dashboard">Dashboard Here</a></p>
-        <div class="row">
+        {% if session.logged_in == True %}
+        <div class="header" style="display: flex; justify-content: center;gap: 10px; align-items: center;">
+            <h1 class="text-center">Welcome {{session.first_name}}!</h1>
+            <a href="/logout">Logout</a>
+        </div>
+            {% endif %}
+        <p style="text-align: center; font-weight: bold;">If you are logged in <a href="/dashboard">Dashboard Here</a></p>
+        <div class="row"style="text-align: center;">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}

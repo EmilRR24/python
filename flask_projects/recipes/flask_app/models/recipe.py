@@ -73,20 +73,27 @@ class Recipe:
 
     # ! READ/RETRIEVE LEFT JOIN
     @classmethod
+    def get_all_with_users(cls) -> list:
+        query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id;"
+        results = connectToMySQL(DATABASE).query_db(query)
+        return results
+
+    @classmethod
     def get_one_with_users(cls, data ):
-        query = "SELECT * FROM recipes LEFT JOIN users ON recipes.id = users.recipe_id WHERE recipes.id=%(id)s;"
+        query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id WHERE recipes.id=%(id)s;"
         results = connectToMySQL(DATABASE).query_db(query,data)
         print(results)
         recipe = [cls(results[0])]
         for user in results:
             user_data = {
-            'id': user['users.id'],
+            'id': user['id'],
             'name':user['name'],
             'cooktime':user['users.cooktime'],
             'description':user['description'],
             'instruction':user['instruction'],
-            'date_made':user['users.date_made'],
-            'user_id':user['user_id']
+            'date_made':user['date_made'],
+            'user_id':user['user_id'],
+            'author': user['users.first_name']
             }
             recipe.users.append(User(user_data))
         return recipe

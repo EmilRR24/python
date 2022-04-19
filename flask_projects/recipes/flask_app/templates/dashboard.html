@@ -28,6 +28,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Under 30 minutes?</th>
+                <th>Author</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -37,6 +38,7 @@
                 <td>{{ recipe.name }}</td>
                 <td>{{ recipe.description }}</td>
                 <td>{{ recipe.cooktime }}</td>
+                <td>{{ recipe.first_name }}</td>
                 <td>
                     <a href="/recipe/show/{{ recipe.id }}">View Instruction</a> 
                     {% if session['user_id'] == recipe.user_id %}
