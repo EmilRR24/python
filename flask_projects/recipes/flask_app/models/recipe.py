@@ -74,7 +74,7 @@ class Recipe:
     # ! READ/RETRIEVE LEFT JOIN
     @classmethod
     def get_all_with_users(cls) -> list:
-        query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id;"
+        query = "SELECT users.first_name, recipes.* FROM recipes LEFT JOIN users ON recipes.user_id = users.id;"
         results = connectToMySQL(DATABASE).query_db(query)
         return results
 
