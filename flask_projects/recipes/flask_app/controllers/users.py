@@ -67,7 +67,6 @@ def new():
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 @app.route('/register/recipe',methods=['POST'])
 def register_recipe():
-    print(request.form)
     if not Recipe.validate_recipe(request.form):
         return redirect('/recipe/new')
     Recipe.save_recipe(request.form)
