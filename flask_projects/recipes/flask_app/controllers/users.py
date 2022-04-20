@@ -81,11 +81,17 @@ def index():
 # TODO READ ALL
 @app.route('/dashboard')
 def dashboard():
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     return render_template("dashboard.html", recipes = Recipe.get_all_with_users())
 
 # TODO READ ONE
 @app.route('/recipe/show/<int:id>')
 def show(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     data ={ 
         "id":id
     }
@@ -96,6 +102,9 @@ def show(id):
 # TODO ONE TO SHOW THE FORM
 @app.route('/recipe/edit/<int:id>')
 def edit(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     data ={ 
         "id":id
     }
