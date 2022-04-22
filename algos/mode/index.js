@@ -59,6 +59,9 @@ function mode(nums) {
             highestFreq.push(parseInt(key));
         }
     }
+    if(highestFreq.length === nums.length){
+        return [];
+    }
     return highestFreq
 }
 
