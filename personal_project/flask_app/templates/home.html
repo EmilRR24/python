@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>*{margin:0;padding:0;}.header{background-color: #474A48;height: 15em;width: 100%;display: flex;align-items: center;}.main{display: flex; height: 100em;}.leftCol, .rightCol{flex: 1; background-color: #537A5A;}.mainBody{flex: 8; background-color: #CDD6DD;}</style>
+    <style>*{margin:0;padding:0; font-family: roboto,sans-serif;}.header{background-color: #000000;height: 15em;width: 100%;display: flex;align-items: center}.main{display: flex; height: 100em;}.leftCol, .rightCol{flex: 1; background-color: #129609;}.mainBody{flex: 8; background-color: #CDD6DD;}</style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Home</title>
 </head>
 <body>
     <!-- <div class="container"> -->
-        <div class="header">
+        <div class="header" style="position: fixed;">
             <div class="headerBody" style="display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
                 <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 30%">
                 <div class="navBar" style="display: flex; gap: 1em">
@@ -22,13 +22,13 @@
         </div>
         <div class="main">
             <div class="leftCol"></div>
-            <div class="mainBody">
+            <div class="mainBody" style="margin-top:11em">
                 <div class="body" style="display: flex">
                     <div class="text" style="flex: 2; margin: 5em;justify-content: center;">
                         <!-- about section of home page -->
                         <!-- <h2>"Everyone is a Gamer"</h2> -->
                         <div class="slogan" style="text-align: center">
-                            <img src="../static/images/Gamer Kings-slogan_black.png" alt="slogan" style="width: 40%;">
+                            <img src="../static/images/everyone is a gamer-logos_black.png" alt="slogan" style="width: 75%;">
                         </div>
                         <p style="text-indent: 5em;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor placeat est qui ipsum laudantium officiis provident rem, soluta sit quae, at ea eaque! Sunt reprehenderit accusantium sapiente excepturi quidem eveniet! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, ipsam ab delectus saepe eveniet architecto earum accusantium molestiae nam aliquid eligendi unde veniam soluta esse a. Suscipit recusandae adipisci quae.</p>
                         <p style="text-indent: 5em;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor placeat est qui ipsum laudantium officiis provident rem, soluta sit quae, at ea eaque! Sunt reprehenderit accusantium sapiente excepturi quidem eveniet!</p>
@@ -43,7 +43,6 @@
                         {% endwith %}
                         <div class="col">
                             <h1>Login</h1>
-                            <p class="text-right"><a href="/">Home</a></p>
                             <form action="/login" method="post">
                                 <div class="form-group">
                                     <label>Email</label>
@@ -58,8 +57,10 @@
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
                                 </div> -->
-                                <button type="submit" class="btn btn-primary" style="margin-top:1em;">Submit</button>
+                                <button type="submit" class="btn btn-primary" style="margin-top:1em; background-color:#129609; border: 0px solid;">Submit</button>
                             </form>
+                            <h2 style="margin-top: .7em;">Create Account</h2>
+                            <button type="submit" class="btn btn-primary" style="margin-top:1em; background-color:#129609; border: 0px solid;">Register</button>
                         </div>
                     </div>
                 </div>
