@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>*{margin:0;padding:0; font-family: roboto,sans-serif;}.header{background-color: #000000;height: 8em;width: 100%;display: flex;align-items: center;}.main{display: flex; height: 100em;}.leftCol, .rightCol{flex: 1; background-color: #129609;}.mainBody{flex: 8; background-color: #CDD6DD;}</style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Gamer Account</title>
+    <title>Gamer Stream</title>
 </head>
 <body>
     <!-- <div class="container"> -->
@@ -24,31 +24,21 @@
             <div class="leftCol"></div>
             <div class="mainBody" style="margin-top:8em">
                 <!-- Main body items here -->
-                <h1 style="text-align: center; margin-top: .5em;">Gamer King {{user.user_name}}!</h1>
+                <h1 style="text-align: center; margin-top: .5em;">Enjoy the Game {{user.user_name}}!</h1>
                 <div class="bodyBottom" style="display: flex; justify-content: space-between; margin: 2em;">
                     <div class="leftBody" style="background-color:rgba(0, 0, 255, 0); width:30%; height: 30%; text-align:center;margin-right: 1em;">
-                        <form action="/user/update" method="post" class="col-6 mx-auto">
-                            <input type="hidden" name="id" value={{user.id}}>
-                            <div class="form-group">
-                                <label for="introduction">Introduction:</label>
-                                <textarea class="form-control" id="introduction" rows="3" style="resize: none;">Ready to Game?</textarea>
-                            </div>
-                            <input type="submit" value="Update" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
-                        </form>
-                        <div class="navBar" style="display: flex; gap: 1em;align-items: center; justify-content:center; margin-top:.3em;">
-                            <a href="" style="font-size: 28px; color:black; text-decoration: none;">Start</a>
-                            <h3 style="color: black; font-size: 28px;">|</h3>
-                            <a href="" style="font-size: 28px; color:black; text-decoration: none;">Win</a>
-                            <h3 style="color: black; font-size: 28px;">|</h3>
-                            <a href="" style="font-size: 28px; color:black; text-decoration: none;">Lose</a>
-                        </div>
-                        <div class="stats" style="border: 2px solid black;border-radius: 10px;background-color:whitesmoke;padding: 1em;;">
+                        <h4>Bet Amount:</h4>
+                        <h3>{{bet amount}}</h3>
+                        <div class="stats" style="border: 2px solid black;border-radius: 10px;background-color:whitesmoke;padding:1em;margin:.5em;">
                             <p>Game stats</p>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci tempora placeat quae laboriosam dolorum voluptatibus eum deleniti, cumque ea rem voluptas recusandae eligendi, alias in, veritatis nobis error ipsa similique.</p>
                         </div>
+                        <h5>Gamer Statistics</h5>
+                        <img src="../static/images/placeholder.png" alt="stats" style="width:350px;">
                     </div>
                     <div class="rightBody" style="background-color: rgba(255, 0, 0, 0); width: 70%; height: 70%; text-align:center;">
                         <img src="https://cdn1.dotesports.com/wp-content/uploads/2022/02/15134005/T1-Faker-2022-1.jpg" alt="streamer" style="width: 80%">
+                        <a href="" style="display:block; font-size: 28px;font-weight: bold; text-decoration: none;" >RESULTS</a>
                     </div>
                 </div>
             </div>

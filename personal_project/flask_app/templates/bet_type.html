@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: roboto, sans-serif;
+        }
+
+        .header {
+            background-color: #000000;
+            height: 8em;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .main {
+            display: flex;
+            height: 100em;
+        }
+
+        .leftCol,
+        .rightCol {
+            flex: 1;
+            background-color: #129609;
+        }
+
+        .mainBody {
+            flex: 8;
+            background-color: #CDD6DD;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Select Bet Type</title>
+</head>
+
+<body>
+    <!-- <div class="container"> -->
+    <div class="header" style="position: fixed;">
+        <div class="headerBody"
+            style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
+            <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 17%">
+            <div class="navBar" style="display: flex; gap: 1em; ">
+                <a href="" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
+                <h3 style="color: white; font-size: 28px;">|</h3>
+                <a href="" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="leftCol"></div>
+        <div class="mainBody" style="margin-top:8em; text-align:center;">
+            <!-- Main body items here -->
+            <h1>Game Name</h1>
+            <img src="../static/images/placeholder.png" alt="game"width="200px" >
+            <form action="/login" method="post">
+                <div class="type" style="display:flex;justify-content:space-evenly;padding:1.5em;">
+                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto;">
+                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Random Gamer</label>
+                        <div class="stats">
+                            <p style="margin:0;">Win Conditions</p>
+                            <p style="margin:0;">Adjusted Odds</p>
+                        </div>
+                        <input type="radio" id="random" name="bet_type" value="random" style="margin: 1em auto;" checked>
+                    </div>
+                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto">
+                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Bet On Gamer</label>
+                        <div class="stats">
+                            <p style="margin:0;">Win Conditions</p>
+                            <p style="margin:0;">Description</p>
+                        </div>
+                        <input type="radio" id="gamer" name="bet_type" value="gamer" style="margin: 1em auto;">
+                    </div>
+                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto">
+                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Event Bet</label>
+                        <div class="stats">
+                            <p style="margin:0;">Win Conditions</p>
+                            <p style="margin:0;">Adjusted Odds</p>
+                        </div>
+                        <input type="radio" id="event" name="bet_type" value="event" style="margin: 1em auto;">
+                    </div>
+                </div>               
+                <button type="submit" class="btn btn-primary" style="margin-top:1em; background-color:#129609; border: 0px solid;">Place Bet</button>
+            </form>
+        </div>
+        <div class="rightCol"></div>
+    </div>
+    <!-- </div> -->
+</body>
+
+</html>
