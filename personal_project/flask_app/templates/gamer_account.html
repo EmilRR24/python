@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>*{margin:0;padding:0; font-family: roboto,sans-serif;}.header{background-color: #000000;height: 8em;width: 100%;display: flex;align-items: center;}.main{display: flex; height: 100em;}.leftCol, .rightCol{flex: 1; background-color: #129609;}.mainBody{flex: 8; background-color: #CDD6DD;}</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Start Game</title>
+</head>
+<body>
+    <!-- <div class="container"> -->
+        <div class="header" style="position: fixed;">
+            <div class="headerBody" style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
+                <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 17%">
+                <div class="navBar" style="display: flex; gap: 1em; ">
+                    <a href="" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
+                    <h3 style="color: white; font-size: 28px;">|</h3>
+                    <a href="" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="leftCol"></div>
+            <div class="mainBody" style="margin-top:8em">
+                <!-- Main body items here -->
+                <h1 style="text-align: center; margin-top: .5em;">Welcome Gamer!</h1>
+                <div class="bodyBottom" style="display: flex; justify-content: space-evenly; margin: 2em 0;">
+                    <div class="leftBody" style="background-color:rgba(0, 0, 255, 0); width:50%; height: 50%; text-align:center;">
+                        <div class="registerGamer">
+                            <form action="/user/update" method="post" class="col-6 mx-auto">
+                                <h2 class="text-center">Register Gamer</h2>
+                                <input type="hidden" name="id" value={{user.id}}>
+                                {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                {% for message in messages %}
+                                <p>{{message}}</p>
+                                {% endfor %}
+                                {% endif %}
+                                {% endwith %}
+                                <div class="form-group">
+                                    <label for="stream_link">Stream Link:</label>
+                                    <input type="text" name="stream_link"  class="form-control" value="{{user.stream_link}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password:</label>
+                                    <input type="text" name="password" class="form-control" value="" placeholder="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Confirm Password:</label>
+                                    <input type="text" name="password"  class="form-control" value="" placeholder="confirm password">
+                                </div>
+                                <input type="submit" value="Register" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="rightBody" style="background-color: rgba(255, 0, 0, 0); width: 50%; height: 50%; text-align:center;">
+                        <h2>Start a Game!</h2>
+                        <form action="/user/update" method="post" class="col-6 mx-auto">
+                            <input type="hidden" name="id" value={{user.id}}>
+                            <div class="form-group">
+                                <label for="introduction">Introduction:</label>
+                                <textarea class="form-control" id="introduction" rows="3" style="resize: none;">Ready to Game?</textarea>
+                            </div>
+                            <input type="submit" value="Start Game" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="rightCol"></div>
+        </div>        
+    <!-- </div> -->
+</body>
+</html>

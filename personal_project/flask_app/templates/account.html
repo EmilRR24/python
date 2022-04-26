@@ -29,6 +29,13 @@
                 <div class="editUser">
                     <form action="/user/update" method="post" class="col-6 mx-auto">
                         <h2 class="text-center">Edit {{user.user_name}}</h2>
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p>{{message}}</p>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
                         <input type="hidden" name="id" value={{user.id}}>
                         <div class="form-group">
                             <label for="first_name">First Name:</label>
@@ -56,39 +63,45 @@
                         <a href="">Game 1</a>
                     </div>
                     <div class="rightBody" style="background-color: rgba(255, 0, 0, 0); width: 350px; height: 250px; text-align:center;">
+                        <h2 style="color: black; font-weight: bold;">Total Points: Points</h2>
                         <div class="navBar" style="display: flex; gap: 1em; justify-content: center;">
                             <a href="" style="font-size: 20px; color:black; text-decoration: none;font-weight: bold;">Add Points</a>
                             <h3 style="color: black; font-size: 20px;">|</h3>
                             <a href="" style="font-size: 20px; color:black; text-decoration: none;font-weight: bold;">Spend Points</a>
                         </div>
-                        <h2 style="color: black; font-weight: bold;">Total Points: Points</h2>
                         <table class="table" style="border: .2em solid black;">
                             <h2 style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;">History</h2>
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Result</th>
+                                <th scope="col">Activity</th>
                                 <th scope="col">Points</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <th scope="row">1</th>
-                                <td>Win</td>
+                                <td>Won</td>
                                 <td>+ 100</td>
                             </tr>
                             <tr>
                                 <th scope="row">2</th>
-                                <td>Win</td>
+                                <td>Added</td>
                                 <td>+ 50</td>
                             </tr>
                             <tr>
                                 <th scope="row">3</th>
+                                <td>Spent</td>
+                                <td>- 100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
                                 <td>Lost</td>
                                 <td>- 100</td>
                             </tr>
                             </tbody>
                         </table>
+                        <a href="">See More</a>
                     </div>
                 </div>
             </div>
