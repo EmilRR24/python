@@ -6,12 +6,16 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 DATABASE = 'website_project' # enter the name of the database you want to use
 
-class Model:
+class User:
     def __init__(self, data:dict) -> None:
         self.id = data['id']
-        self.column1 = data['column1']
-        self.column2 = data['column2']
-        self.column3 = data['column3']
+        self.first_name = data['first_name']
+        self.last_name = data['last_name']
+        self.email = data['email']
+        self.user_name = data['user_name']
+        self.password = data['password']
+        self.activity = data['activity']
+        self.points = data['points']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -32,14 +36,11 @@ class Model:
         if len(user['first_name']) < 2:
             flash("First name must be at least 2 characters.")
             is_valid = False
-        if not (user['first_name'].isalpha()):
-            flash("First name must be letters!")
-            is_valid = False
         if len(user['last_name']) < 2:
             flash("Last name must be at least 2 characters.")
             is_valid = False
-        if not (user['last_name'].isalpha()):
-            flash("Last name must be letters")
+        if len(user['user_name']) < 2:
+            flash("User name must be at least 2 characters.")
             is_valid = False
         if len(user['password']) < 8:
             flash("Password must be at least 8 characters.")
@@ -55,35 +56,54 @@ class Model:
     # ! CREATE
     @classmethod
     def save(cls, data:dict) -> int:
-        query = "INSERT INTO models (column1,column2,column3) VALUES (%(column1)s,%(column2)s,%(column3)s);"
+        query = "INSERT INTO users (first_name,last_name,email,user_name,password,total_points) VALUES (%(first_name)s,%(last_name)s,%(email)s,%(user_name)s,%(password)s,%(total_points)s);"
         result = connectToMySQL(DATABASE).query_db(query,data)
         return result
 
     # ! READ/RETRIEVE ALL
     @classmethod
     def get_all(cls) -> list:
-        query = "SELECT * FROM models;"
+        query = "SELECT * FROM users;"
         results = connectToMySQL(DATABASE).query_db(query)
-        models = []
+        users = []
         for u in results:
-            models.append( cls(u) )
-        return models
+            users.append( cls(u) )
+        return users
     
     # ! READ/RETRIEVE ONE
     @classmethod
     def get_one(cls,data:dict) -> object:
-        query  = "SELECT * FROM models WHERE id = %(id)s";
+        query  = "SELECT * FROM users WHERE id = %(id)s";
         result = connectToMySQL(DATABASE).query_db(query,data)
         return cls(result[0])
+    @classmethod
+    def get_by_email(cls,data:dict) -> object or bool:
+        query = "SELECT * FROM users WHERE email = %(email)s;"
+        result = connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        # Didn't find a matching email
+        if len(result) < 1:
+            return False
+        return cls(result[0])
+    @classmethod
+    def get_by_user_name(cls,data:dict) -> object or bool:
+        query = "SELECT * FROM users WHERE user_name = %(user_name)s;"
+        result = connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        # Didn't find a matching user_name
+        if len(result) < 1:
+            return False
+        return cls(result[0])
+
 
     # ! UPDATE
     @classmethod
     def update(cls,data:dict) -> int:
-        query = "UPDATE models SET column1=%(column1)s,column2=%(column2)s,column3=%(column3)s,updated_at=NOW() WHERE id = %(id)s;"
+        query = "UPDATE users SET column1=%(column1)s,column2=%(column2)s,column3=%(column3)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
 
     # ! DELETE
     @classmethod
     def destroy(cls,data:dict):
-        query  = "DELETE FROM models WHERE id = %(id)s;"
+        query  = "DELETE FROM users WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
