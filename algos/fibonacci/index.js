@@ -32,13 +32,11 @@ const expected6 = 21;
  * @returns {number} The fibonacci number at the given position.
  */
 function fibonacci(num) {
-    if(num < 1){
-        return 0;
-    }
-    else if (num <2){
-        return 1;
-    }
-    return fibonacci(num -2) + fibonacci(num -1)
+    // if(num < 2){
+    //     return num;
+    // }
+    // return fibonacci(num -2) + fibonacci(num -1)
+    return (num <2 || num === 5) ? num : fibonacci(num-2) + fibonacci(num-1)
 }
 console.log(fibonacci(num1))
 console.log(fibonacci(num2))
