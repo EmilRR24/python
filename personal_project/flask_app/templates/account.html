@@ -12,11 +12,13 @@
     <!-- <div class="container"> -->
         <div class="header" style="position: fixed;">
             <div class="headerBody" style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
-                <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 17%">
+                <a href="/">
+                    <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 23%">
+                </a>
                 <div class="navBar" style="display: flex; gap: 1em; ">
-                    <a href="/account" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
+                    <a href="/account/{{session.user_id}}" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
                     <h3 style="color: white; font-size: 28px;">|</h3>
-                    <a href="" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
+                    <a href="/games" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
                     {% if session.logged_in == True %}
                     <h3 style="color: white; font-size: 28px;">|</h3>
                     <a href="/logout" style="font-size: 28px; color:white; text-decoration: none;">Logout</a>
@@ -28,11 +30,13 @@
             <div class="leftCol"></div>
             <div class="mainBody" style="margin-top:8em">
                 <!-- Main body items here -->
-                <h1 style="text-align: center; margin-top: .5em;">Account</h1>
-                <h2 style="text-align: center"><a href="">Game Start Page</a></h2>
+                <h1 style="text-align: center; margin-top: .5em;">{{session.user_name}}</h1>
+                <div class="startButton" style="margin:1em; text-align: center;">
+                    <a href="/start/{{session.user_id}}" style="cursor: pointer; border:.125em solid rgb(14, 231, 14);color: rgba(5, 185, 5, 0.986);text-decoration: none;padding: .5em 1em; border-radius:.25em;text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">Start Game</a>
+                </div>
                 <div class="editUser">
                     <form action="/user/update" method="post" class="col-6 mx-auto">
-                        <h2 class="text-center">Edit {{user.user_name}}</h2>
+                        <h2 class="text-center">Edit Account</h2>
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
                         {% for message in messages %}
@@ -40,38 +44,40 @@
                         {% endfor %}
                         {% endif %}
                         {% endwith %}
-                        <input type="hidden" name="id" value={{user.id}}>
+                        <input type="hidden" name="id" value={session.user_id}}>
                         <div class="form-group">
                             <label for="first_name">First Name:</label>
-                            <input type="text" name="first_name"  class="form-control" value="{{user.first_name}}">
+                            <input type="text" name="first_name"  class="form-control" value="">
                         </div>
                         <div class="form-group">
                             <label for="last_name">Last Name:</label>
-                            <input type="text" name="last_name" class="form-control" value="{{user.last_name}}">
+                            <input type="text" name="last_name" class="form-control" value="">
                         </div>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="text" name="email"  class="form-control" value="{{user.email}}">
+                            <input type="text" name="email"  class="form-control" value="">
                         </div>
                         <div class="form-group">
                             <label for="user_name">User Name:</label>
-                            <input type="text" name="user_name"  class="form-control" value="{{user.user_name}}">
+                            <input type="text" name="user_name"  class="form-control" value="{{session.user_name}}">
                         </div>
                         <input type="submit" value="Update Account" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
                     </form>
                 </div>
                 <div class="bodyBottom" style="display: flex; justify-content: space-evenly; margin: 2em 0;">
                     <div class="leftBody" style="background-color:rgba(0, 0, 255, 0); width:250px; height: 250px; text-align:center;">
-                        <input type="button" name="bet" class="btn" style="background-color: #129609; color: white; margin:.5em 0;" value="Place Bet">
+                        <a href="/games">
+                            <input type="button" name="bet" class="btn" style="background-color: #129609; color: white; margin:.5em 0;" value="Place Bet">
+                        </a>
                         <h3 style="margin: .5em 0;">Active Bets</h3>
                         <a href="">Game 1</a>
                     </div>
                     <div class="rightBody" style="background-color: rgba(255, 0, 0, 0); width: 350px; height: 250px; text-align:center;">
-                        <h2 style="color: black; font-weight: bold;">Total Points: Points</h2>
+                        <h2 style="color: black; font-weight: bold;">Total Points: {{user.total_points}}</h2>
                         <div class="navBar" style="display: flex; gap: 1em; justify-content: center;">
-                            <a href="" style="font-size: 20px; color:black; text-decoration: none;font-weight: bold;">Add Points</a>
+                            <a href="/add/{{session.user_id}}" style="font-size: 20px; color:blue; text-decoration: none;font-weight: bold;">Add Points</a>
                             <h3 style="color: black; font-size: 20px;">|</h3>
-                            <a href="" style="font-size: 20px; color:black; text-decoration: none;font-weight: bold;">Spend Points</a>
+                            <a href="/spend/{{session.user_id}}" style="font-size: 20px; color:blue; text-decoration: none;font-weight: bold;">Spend Points</a>
                         </div>
                         <table class="table" style="border: .2em solid black;">
                             <h2 style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;">History</h2>

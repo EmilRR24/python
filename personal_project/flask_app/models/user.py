@@ -14,8 +14,7 @@ class User:
         self.email = data['email']
         self.user_name = data['user_name']
         self.password = data['password']
-        self.activity = data['activity']
-        self.points = data['points']
+        self.total_points = data['total_points']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -99,7 +98,7 @@ class User:
     # ! UPDATE
     @classmethod
     def update(cls,data:dict) -> int:
-        query = "UPDATE users SET column1=%(column1)s,column2=%(column2)s,column3=%(column3)s,updated_at=NOW() WHERE id = %(id)s;"
+        query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,user_name=%(user_name)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
 
     # ! DELETE

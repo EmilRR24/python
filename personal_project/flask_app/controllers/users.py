@@ -50,7 +50,7 @@ def login():
         flash('invalid password')
         return redirect('/')
     session['user_id'] = user_in_db.id
-    session['user_name'] = user_in_db.first_name
+    session['user_name'] = user_in_db.user_name
     session['logged_in'] = True
     return redirect('/account')
 
@@ -86,20 +86,42 @@ def index():
 def registration():
     return render_template('register.html')
 
-@app.route('/account')
-def dashboard():
+# TODO READ ALL
+@app.route('/games')
+def games_list():
+    return render_template('games_list.html')
+
+# TODO READ ONE
+@app.route('/account/<int:id>')
+def dashboard(id):
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-    return render_template('account.html')
-
-# TODO READ ONE
-@app.route('/user/show/<int:id>')
-def show(id):
     data ={ 
         "id":id
     }
-    return render_template("show_user.html",user=User.get_one(data))
+    return render_template('account.html', user=User.get_one(data))
+
+@app.route('/add/<int:id>')
+def add(id):
+    data ={ 
+        "id":id
+    }
+    return render_template("add_points.html",user=User.get_one(data))
+
+@app.route('/spend/<int:id>')
+def spend(id):
+    data ={ 
+        "id":id
+    }
+    return render_template("spend_points.html",user=User.get_one(data))
+
+@app.route('/start/<int:id>')
+def start(id):
+    data ={ 
+        "id":id
+    }
+    return render_template("gamer_register.html",user=User.get_one(data))
 
 # ! ///// UPDATE /////
 # TODO UPDATE REQUIRES TWO ROUTES
