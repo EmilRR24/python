@@ -45,9 +45,9 @@
     <!-- <div class="container"> -->
         <div class="header" style="position: fixed;">
             <div class="headerBody" style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
-                <a href="/">
-                    <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style="width: 23%">
-                </a>
+                <div class="logo" style=" height:8em;margin-left:2%;" >
+                    <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style=" height:8em;cursor: pointer;" onclick="window.location.href='/'">
+                </div>
                 <div class="navBar" style="display: flex; gap: 1em; ">
                     <a href="/account/{{session.user_id}}" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
                     <h3 style="color: white; font-size: 28px;">|</h3>
