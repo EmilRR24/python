@@ -66,7 +66,7 @@
             <!-- Main body items here -->
             <h1 style="text-align: center; margin-top: .5em;">{{user.user_name}}</h1>
             <div class="editUser">
-                <form action="/user/update" method="post" class="col-6 mx-auto">
+                <form action="/account/spend/{{session.user_id}}" method="post" class="col-6 mx-auto">
                     <h2 class="text-center">Spend Points</h2>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -75,10 +75,12 @@
                     {% endfor %}
                     {% endif %}
                     {% endwith %}
-                    <input type="hidden" name="id" value={{user.id}}>
+                    <input type="hidden" name="user_id" value="{{user.id}}">
+                    <input type="hidden" name="total_points" value="{{user.total_points}}">
+                    <input type="hidden" name="activity" value="Spent Points">
                     <div class="form-group">
                         <label for="amount">Amount:</label>
-                        <input type="text" name="amount" class="form-control" value="">
+                        <input type="text" name="points" class="form-control" value="">
                     </div>
                     <div class="form-group" style="margin-top:.5em;">
                         <label for="payment_method">Withdraw to:</label>
@@ -93,46 +95,41 @@
                 </form>
             </div>
             <div class="bodyBottom" style="margin:auto;padding: 2em;width:50%;text-align:center;">
-                <h2 style="color: black; font-weight: bold;">Total Points: Points</h2>
+                <h2 style="color: black; font-weight: bold;">Total Points: {{user.total_points}}</h2>
                 <div class="navBar" style="display: flex; gap: 1em; justify-content: center;">
-                    <a href="" style="font-size: 20px; color:black; text-decoration: none;font-weight: bold;">Spend
+                    <a href="/add/{{session.user_id}}" style="font-size: 20px; color:rgb(0, 32, 242); text-decoration: none;font-weight: bold;">Add
                         Points</a>
                 </div>
                 <table class="table" style="border: .2em solid black;">
-                    <h2
-                        style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;">
-                        History</h2>
+                    <h2 style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;">History</h2>
                     <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Activity</th>
-                            <th scope="col">Points</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">Transaction #</th>
+                        <th scope="col">Activity</th>
+                        <th scope="col">Points</th>
+                    </tr>
                     </thead>
                     <tbody>
+                    {% if tr_count > 5 %}
+                        {% for ind in range(5) %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Won</td>
-                            <td>+ 100</td>
+                            <td>{{user.transactions[ind].id}}</td>
+                            <td>{{user.transactions[ind].activity}}</td>
+                            <td>{{user.transactions[ind].points}}</td>
                         </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for transaction in user.transactions %}
                         <tr>
-                            <th scope="row">2</th>
-                            <td>Added</td>
-                            <td>+ 50</td>
+                            <td>{{transaction.id}}</td>
+                            <td>{{transaction.activity}}</td>
+                            <td>{{transaction.points}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Spent</td>
-                            <td>- 100</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>Lost</td>
-                            <td>- 100</td>
-                        </tr>
+                        {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
-                <a href="">See More</a>
+                <a href="/transactions/{{session.user_id}}">See More</a>
             </div>
         </div>
         <div class="rightCol"></div>

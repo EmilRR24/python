@@ -38,7 +38,7 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Add Points</title>
+    <title>Transaction History</title>
 </head>
 
 <body>
@@ -64,38 +64,12 @@
         <div class="mainBody" style="margin-top:8em">
             <!-- Main body items here -->
             <h1 style="text-align: center; margin-top: .5em;">{{user.user_name}}</h1>
-            <div class="editUser">
-                <h2 class="text-center">Add Points</h2>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                <p>{{message}}</p>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-                <form action="/account/add/{{session.user_id}}" method="post" class="col-6 mx-auto">
-                    <input type="hidden" name="user_id" value="{{user.id}}">
-                    <input type="hidden" name="total_points" value="{{user.total_points}}">
-                    <input type="hidden" name="activity" value="Added Points">
-                    <div class="form-group">
-                        <label for="amount">Amount:</label>
-                        <input type="text" name="points" class="form-control" value="">
-                    </div>
-                    <div class="form-group" style="margin-top:.5em;">
-                        <label for="payment_method">Payment Method:</label>
-                        <select name="payment_method" id="payment_method">
-                            <option value="bank_account">Bank Account</option>
-                            <option value="credit_card">Credit Card</option>
-                            <option value="paypal">Paypal</option>
-                        </select>
-                    </div>
-                    <input type="submit" value="Add Points" class="btn btn-success"
-                        style="margin-top:1em; background-color:#129609; border: 0px solid;">
-                </form>
-            </div>
             <div class="bodyBottom" style="margin:auto;padding: 2em;width:50%;text-align:center;">
                 <h2 style="color: black; font-weight: bold;">Total Points: {{user.total_points}}</h2>
                 <div class="navBar" style="display: flex; gap: 1em; justify-content: center;">
+                    <a href="/add/{{session.user_id}}" style="font-size: 20px; color:rgb(0, 32, 242); text-decoration: none;font-weight: bold;">Add
+                        Points</a>
+                    <h3 style="color: black; font-size: 20px;">|</h3>
                     <a href="/spend/{{session.user_id}}" style="font-size: 20px; color:rgb(4, 25, 255); text-decoration: none;font-weight: bold;">Spend Points</a>
                 </div>
                 <table class="table" style="border: .2em solid black;">
@@ -108,15 +82,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% if tr_count > 5 %}
-                        {% for ind in range(5) %}
-                        <tr>
-                            <td>{{user.transactions[ind].id}}</td>
-                            <td>{{user.transactions[ind].activity}}</td>
-                            <td>{{user.transactions[ind].points}}</td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
                         {% for transaction in user.transactions %}
                         <tr>
                             <td>{{transaction.id}}</td>
@@ -124,10 +89,8 @@
                             <td>{{transaction.points}}</td>
                         </tr>
                         {% endfor %}
-                    {% endif %}
                     </tbody>
                 </table>
-                <a href="/transactions/{{session.user_id}}">See More</a>
             </div>
         </div>
         <div class="rightCol"></div>

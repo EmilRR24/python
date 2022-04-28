@@ -1,8 +1,10 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
+from flask_app.models.transaction import Transaction
 import re    # the regex module
 # create a regular expression object that we'll use later   
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
+
 
 DATABASE = 'website_project' # enter the name of the database you want to use
 
@@ -17,6 +19,9 @@ class User:
         self.total_points = data['total_points']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        if "points" in data:
+            self.points = data['points']
+        self.transactions = []
 
     # ! VALIDATIONS
     @classmethod
@@ -52,6 +57,14 @@ class User:
             is_valid = False
         return is_valid
 
+    @staticmethod
+    def validate_points(user:dict) -> bool:
+        is_valid = True
+        if user['points'] > user['total_points']:
+            flash("Not Enough Points In Your Account!")
+            is_valid = False
+        return is_valid
+
     # ! CREATE
     @classmethod
     def save(cls, data:dict) -> int:
@@ -72,9 +85,21 @@ class User:
     # ! READ/RETRIEVE ONE
     @classmethod
     def get_one(cls,data:dict) -> object:
-        query  = "SELECT * FROM users WHERE id = %(id)s";
-        result = connectToMySQL(DATABASE).query_db(query,data)
-        return cls(result[0])
+        query  = "SELECT * FROM users LEFT JOIN transactions ON users.id = transactions.user_id WHERE users.id = %(id)s ORDER BY transactions.id DESC";
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        if results:
+            user = cls(results[0])
+            for data in results:
+                tr_data = {
+                    "id" : data['transactions.id'],
+                    "activity" : data['activity'],
+                    "points" : data['points'],
+                    "bet_id" : data['bet_id'],
+                    "created_at" : data['transactions.created_at']
+                }
+                user.transactions.append(Transaction(tr_data)) 
+        return user
+
     @classmethod
     def get_by_email(cls,data:dict) -> object or bool:
         query = "SELECT * FROM users WHERE email = %(email)s;"
@@ -100,6 +125,15 @@ class User:
     def update(cls,data:dict) -> int:
         query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,user_name=%(user_name)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
+
+    @classmethod
+    def update_points(cls,data:dict) -> int:
+        query = "UPDATE users SET total_points=%(amount)s,updated_at=NOW() WHERE id = %(user_id)s;"
+        result =  connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        return result
+    
+
 
     # ! DELETE
     @classmethod

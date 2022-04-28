@@ -32,7 +32,16 @@
                 <!-- Main body items here -->
                 <h1 style="text-align: center; margin-top: .5em;">{{session.user_name}}</h1>
                 <div class="startButton" style="margin:1em; text-align: center;">
-                    <a href="/start/{{session.user_id}}" style="cursor: pointer; border:.125em solid rgb(14, 231, 14);color: rgba(5, 185, 5, 0.986);text-decoration: none;padding: .5em 1em; border-radius:.25em;text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">Start Game</a>
+                    <a href="/start/{{session.user_id}}" class="neonButton"
+                    style="cursor: pointer;
+                    border:.125em solid rgb(14, 231, 14);
+                    color: rgba(5, 185, 5, 0.986);
+                    text-decoration: none;
+                    padding: .5em 1em;
+                    border-radius:.25em;
+                    text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                    box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                    Start Game</a>
                 </div>
                 <div class="editUser">
                     <form action="/user/update" method="post" class="col-6 mx-auto">
@@ -61,7 +70,10 @@
                             <label for="user_name">User Name:</label>
                             <input type="text" name="user_name"  class="form-control" value="{{session.user_name}}">
                         </div>
+                        <div class="button" style="display:flex;justify-content:space-between;">
                         <input type="submit" value="Update Account" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                            <a href="/account/destroy/{{session.user_id}}" ><input value="Delete Account" class="btn btn-success" style="margin-top:1em; background-color:#e80202c9; border: 0px solid;"></a>
+                        </div>
                     </form>
                 </div>
                 <div class="bodyBottom" style="display: flex; justify-content: space-evenly; margin: 2em 0;">
@@ -83,40 +95,38 @@
                             <h2 style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;">History</h2>
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Transaction #</th>
                                 <th scope="col">Activity</th>
                                 <th scope="col">Points</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Won</td>
-                                <td>+ 100</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Added</td>
-                                <td>+ 50</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Spent</td>
-                                <td>- 100</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Lost</td>
-                                <td>- 100</td>
-                            </tr>
+                            {% if tr_count > 5 %}
+                                {% for ind in range(5) %}
+                                <tr>
+                                    <td>{{user.transactions[ind].id}}</td>
+                                    <td>{{user.transactions[ind].activity}}</td>
+                                    <td>{{user.transactions[ind].points}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% for transaction in user.transactions %}
+                                <tr>
+                                    <td>{{transaction.id}}</td>
+                                    <td>{{transaction.activity}}</td>
+                                    <td>{{transaction.points}}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
                             </tbody>
                         </table>
-                        <a href="">See More</a>
+                        <a href="/transactions/{{session.user_id}}">See More</a>
                     </div>
                 </div>
             </div>
             <div class="rightCol"></div>
         </div>        
     <!-- </div> -->
+    
 </body>
 </html>

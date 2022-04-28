@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)     # we are creating an object called bcrypt, 
                         # which is made by invoking the function Bcrypt with our app as an argument     
 from flask_app.models.user import User
+from flask_app.models.transaction import Transaction
 
 # ! ////// REGISTER WITH BCRYPT  //////
 @app.route('/register/user', methods=['POST'])
@@ -36,7 +37,8 @@ def register():
     session['user_id'] = user_id
     session['user_name'] = request.form.get('user_name')
     session['logged_in'] = True
-    return redirect("/account")
+    flash("Account Created! Please Log In!")
+    return redirect(f'/account/{user_id}')
 
 # ! ////// LOGIN //////
 @app.route('/login', methods=['post'])
@@ -52,7 +54,8 @@ def login():
     session['user_id'] = user_in_db.id
     session['user_name'] = user_in_db.user_name
     session['logged_in'] = True
-    return redirect('/account')
+    dataId = user_in_db.id
+    return redirect(f'/account/{dataId}')
 
 # ! ////// LOGOUT //////
 @app.route('/logout')
@@ -64,9 +67,45 @@ def logout():
 # ! ////// CREATE  //////
 # TODO CREATE REQUIRES TWO ROUTES:
 # TODO ONE TO DISPLAY THE FORM:
-@app.route('/user/new')
-def new():
-    return render_template("new_user.html")
+@app.route('/account/add/<int:id>',methods=['POST'])
+def add_points(id):
+    data = id
+    user_data = {
+        "user_id": request.form['user_id'],
+        "total_points": request.form['total_points'],
+        "activity": request.form['activity'],
+        "points": request.form['points'],
+    }
+    # Call the save @classmethod on User
+    Transaction.save_transaction(user_data)
+    amount = {
+        "amount" : (int(request.form['total_points'])+int(request.form['points'])),
+        "user_id" : int(request.form['user_id'])
+    }
+    print("amount is",amount)
+    User.update_points(amount)
+    return redirect(f'/add/{data}')
+
+@app.route('/account/spend/<int:id>',methods=['POST'])
+def spend_points(id):
+    data = id
+    if not User.validate_points(request.form):
+        return redirect(f'/spend/{data}')
+    user_data = {
+        "user_id": request.form['user_id'],
+        "total_points": request.form['total_points'],
+        "activity": request.form['activity'],
+        "points": request.form['points'],
+    }
+    # Call the save @classmethod on User
+    Transaction.save_transaction(user_data)
+    amount = {
+        "amount" : (int(request.form['total_points'])-int(request.form['points'])),
+        "user_id" : int(request.form['user_id'])
+    }
+    print("amount is",amount)
+    User.update_points(amount)
+    return redirect(f'/spend/{data}')
 
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 @app.route('/user/create',methods=['POST'])
@@ -89,7 +128,30 @@ def registration():
 # TODO READ ALL
 @app.route('/games')
 def games_list():
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     return render_template('games_list.html')
+
+@app.route('/account/')
+def account():
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    data = session.get('user')
+    return render_template(f'/account/{data}')
+
+@app.route('/transactions/<int:id>')
+def transactions_history(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    data ={ 
+        "id":id
+    }
+    user=User.get_one(data)
+    return render_template("transactions.html", user=user)
+
 
 # TODO READ ONE
 @app.route('/account/<int:id>')
@@ -100,21 +162,27 @@ def dashboard(id):
     data ={ 
         "id":id
     }
-    return render_template('account.html', user=User.get_one(data))
+    user=User.get_one(data)
+    tr_count = len(user.transactions)
+    return render_template('account.html', user=user, tr_count=tr_count)
 
 @app.route('/add/<int:id>')
 def add(id):
     data ={ 
         "id":id
     }
-    return render_template("add_points.html",user=User.get_one(data))
+    user=User.get_one(data)
+    tr_count = len(user.transactions)
+    return render_template("add_points.html",user=user, tr_count=tr_count)
 
 @app.route('/spend/<int:id>')
 def spend(id):
     data ={ 
         "id":id
     }
-    return render_template("spend_points.html",user=User.get_one(data))
+    user=User.get_one(data)
+    tr_count = len(user.transactions)
+    return render_template("spend_points.html",user=user, tr_count=tr_count)
 
 @app.route('/start/<int:id>')
 def start(id):
@@ -140,10 +208,15 @@ def update():
     return redirect('/users')
 
 # ! ///// DELETE //////
-@app.route('/user/destroy/<int:id>')
+@app.route('/account/destroy/<int:id>')
 def destroy(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     data ={
         'id': id
     }
     User.destroy(data)
-    return redirect('/users')
+    session.clear()
+    flash('Account Deleted!')
+    return redirect('/')
