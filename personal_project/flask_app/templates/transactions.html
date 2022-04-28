@@ -79,16 +79,29 @@
                         <th scope="col">Transaction #</th>
                         <th scope="col">Activity</th>
                         <th scope="col">Points</th>
+                        <th scope="col">Date and Time</th>
                     </tr>
                     </thead>
                     <tbody>
+                        {% if tr_count > 25 %}
+                        {% for ind in range(25) %}
+                        <tr>
+                            <td>{{user.transactions[ind].id}}</td>
+                            <td>{{user.transactions[ind].activity}}</td>
+                            <td>{{user.transactions[ind].points}}</td>
+                            <td>{{user.transactions[ind].created_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
                         {% for transaction in user.transactions %}
                         <tr>
                             <td>{{transaction.id}}</td>
                             <td>{{transaction.activity}}</td>
                             <td>{{transaction.points}}</td>
+                            <td>{{transaction.created_at}}</td>
                         </tr>
                         {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>

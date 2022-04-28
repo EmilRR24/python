@@ -49,18 +49,32 @@
                             </div>
                             <input type="submit" value="Start Game" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
                         </form>
+                        {% if session.stream_link %}
+                        <div class="updateGamer">
+                            <form action="/gamer/update/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                                <p style="text-align:center;">Stream Link is required to host games.</p>
+                                <input type="hidden" name="user_id" value={{user.id}}>
+                                <div class="form-group">
+                                    <label for="stream_link">Update Stream Link:</label>
+                                    <input type="text" name="stream_link"  class="form-control" value="{{session.stream_link}}" placeholder="No Stream Link">
+                                </div>
+                                <input type="submit" value="Update" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                            </form>
+                        </div>
+                        {% else %}
                         <div class="registerGamer">
-                            <form action="/user/update" method="post" class="col-6 mx-auto">
+                            <form action="/gamer/register/{{session.user_id}}" method="post" class="col-6 mx-auto">
                                 <h2 class="text-center">Become a Gamer King</h2>
                                 <p style="text-align:center;">Stream Link is required to become a Gamer King and host games.</p>
                                 <input type="hidden" name="user_id" value={{user.id}}>
                                 <div class="form-group">
                                     <label for="stream_link">Stream Link:</label>
-                                    <input type="text" name="stream_link"  class="form-control" value="{{user.stream_link}}" placeholder="No Stream Link">
+                                    <input type="text" name="stream_link"  class="form-control" value="{{session.stream_link}}" placeholder="No Stream Link">
                                 </div>
                                 <input type="submit" value="Save" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
                             </form>
                         </div>
+                        {% endif %}
                 </div>
             </div>
             <div class="rightCol"></div>

@@ -6,6 +6,7 @@ bcrypt = Bcrypt(app)     # we are creating an object called bcrypt,
                         # which is made by invoking the function Bcrypt with our app as an argument     
 from flask_app.models.user import User
 from flask_app.models.transaction import Transaction
+from flask_app.models.gamer import Gamer
 
 # ! ////// REGISTER WITH BCRYPT  //////
 @app.route('/register/user', methods=['POST'])
@@ -69,6 +70,9 @@ def logout():
 # TODO ONE TO DISPLAY THE FORM:
 @app.route('/account/add/<int:id>',methods=['POST'])
 def add_points(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     data = id
     user_data = {
         "user_id": request.form['user_id'],
@@ -88,6 +92,9 @@ def add_points(id):
 
 @app.route('/account/spend/<int:id>',methods=['POST'])
 def spend_points(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
     data = id
     if not User.validate_points(request.form):
         return redirect(f'/spend/{data}')
@@ -106,6 +113,21 @@ def spend_points(id):
     print("amount is",amount)
     User.update_points(amount)
     return redirect(f'/spend/{data}')
+
+@app.route('/gamer/register/<int:id>',methods=['POST'])
+def register_gamer(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    data = id
+    gamer_data = {
+        "user_id": request.form['user_id'],
+        "stream_link": request.form['stream_link'],
+    }
+    # Call the save @classmethod on User
+    Gamer.save_gamer(gamer_data)
+    session['stream_link'] = request.form['stream_link']
+    return redirect(f'/start/{data}')
 
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 @app.route('/user/create',methods=['POST'])
@@ -150,7 +172,8 @@ def transactions_history(id):
         "id":id
     }
     user=User.get_one(data)
-    return render_template("transactions.html", user=user)
+    tr_count = len(user.transactions)
+    return render_template("transactions.html", user=user, tr_count=tr_count)
 
 
 # TODO READ ONE
@@ -194,12 +217,19 @@ def start(id):
 # ! ///// UPDATE /////
 # TODO UPDATE REQUIRES TWO ROUTES
 # TODO ONE TO SHOW THE FORM
-@app.route('/user/edit/<int:id>')
-def edit(id):
-    data ={ 
-        "id":id
+@app.route('/gamer/update/<int:id>',methods=['POST'])
+def edit_stream(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    user_data = {
+        "user_id": int(request.form['user_id']),
+        "stream_link": request.form['stream_link'],
     }
-    return render_template("edit_user.html",user=User.get_one(data))
+    print(user_data)
+    Gamer.update_stream(user_data)
+    session['stream_link'] = request.form['stream_link']
+    return redirect(f'/start/{id}')
 
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 @app.route('/user/update',methods=['POST'])

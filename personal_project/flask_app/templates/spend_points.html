@@ -107,6 +107,7 @@
                         <th scope="col">Transaction #</th>
                         <th scope="col">Activity</th>
                         <th scope="col">Points</th>
+                        <th scope="col">Date and Time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -116,6 +117,7 @@
                             <td>{{user.transactions[ind].id}}</td>
                             <td>{{user.transactions[ind].activity}}</td>
                             <td>{{user.transactions[ind].points}}</td>
+                            <td>{{user.transactions[ind].created_at}}</td>
                         </tr>
                         {% endfor %}
                     {% else %}
@@ -124,6 +126,7 @@
                             <td>{{transaction.id}}</td>
                             <td>{{transaction.activity}}</td>
                             <td>{{transaction.points}}</td>
+                            <td>{{transaction.created_at}}</td>
                         </tr>
                         {% endfor %}
                     {% endif %}
