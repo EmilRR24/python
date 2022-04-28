@@ -6,21 +6,21 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 DATABASE = 'website_project' # enter the name of the database you want to use
 
-class Gamer:
+class Game:
     def __init__(self, data:dict) -> None:
         self.id = data['id']
-        self.stream_link = data['stream_link']
-        self.updated_at = data['updated_at']
+        self.name = data['name']
         self.created_at = data['created_at']
-        self.user_id = data['user_id']
-        if "total_points" in data:
-            self.total_points = data['total_points']
+        self.completed_at = data['completed_at']
+        self.gamer_id = data['gamer_id']
+        # if "total_points" in data:
+        #     self.total_points = data['total_points']
 
 
     # ! CREATE
     @classmethod
-    def save_gamer(cls, data:dict) -> int:
-        query = "INSERT INTO gamer (stream_link,user_id) VALUES (%(stream_link)s,%(user_id)s);"
+    def save_game(cls, data:dict) -> int:
+        query = "INSERT INTO game (stream_link,user_id) VALUES (%(stream_link)s,%(user_id)s);"
         result = connectToMySQL(DATABASE).query_db(query,data)
         print(result)
         return result

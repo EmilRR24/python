@@ -7,6 +7,7 @@ bcrypt = Bcrypt(app)     # we are creating an object called bcrypt,
 from flask_app.models.user import User
 from flask_app.models.transaction import Transaction
 from flask_app.models.gamer import Gamer
+from flask_app.models.game import Game
 
 # ! ////// REGISTER WITH BCRYPT  //////
 @app.route('/register/user', methods=['POST'])
@@ -129,6 +130,26 @@ def register_gamer(id):
     session['stream_link'] = request.form['stream_link']
     return redirect(f'/start/{data}')
 
+@app.route('/gamer/start/<int:id>',methods=['POST'])
+def gamer_start(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+
+    gamer_data = {
+        "introduction": request.form['introduction'],
+    }
+    # Call the save @classmethod on User
+    session['introduction'] = request.form['introduction']
+    return redirect("/gamer/start")
+
+@app.route('/gamer/start')
+def gamer_start_page():
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    return render_template("show_gamer.html")
+
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 @app.route('/user/create',methods=['POST'])
 def create():
@@ -212,6 +233,8 @@ def start(id):
     data ={ 
         "id":id
     }
+    gamer_in_db = Gamer.get_one_with_gamer(data)
+    session['stream_link'] = gamer_in_db.stream_link
     return render_template("gamer_register.html",user=User.get_one(data))
 
 # ! ///// UPDATE /////

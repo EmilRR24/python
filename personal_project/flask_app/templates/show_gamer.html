@@ -64,27 +64,28 @@
         <div class="leftCol"></div>
         <div class="mainBody" style="margin-top:8em">
             <!-- Main body items here -->
-            <h1 style="text-align: center; margin-top: .5em;">Gamer King {{user.user_name}}!</h1>
+            <h1 style="text-align: center; margin-top: .5em;">Gamer King {{session.user_name}}!</h1>
             <div class="bodyBottom" style="display: flex; justify-content: space-between; margin: 2em;">
                 <div class="leftBody"
                     style="background-color:rgba(0, 0, 255, 0); width:30%; height: 30%; text-align:center;margin-right: 1em;">
-                    <form action="/user/update" method="post" class="col-6 mx-auto">
-                        <input type="hidden" name="id" value={{user.id}}>
+                    <form action="/gamer/start/{{session.user_id}}" method="post" class="col-6 mx-auto"">
                         <div class="form-group">
                             <label for="introduction">Introduction:</label>
-                            <textarea class="form-control" id="introduction" rows="3"
-                                style="resize: none;">Ready to Game?</textarea>
+                            <textarea class="form-control" name="introduction" rows="3"
+                                style="resize: none;">{{session.introduction}}</textarea>
                         </div>
                         <input type="submit" value="Update" class="btn btn-success"
                             style="margin-top:1em; background-color:#129609; border: 0px solid;">
                     </form>
                     <div class="navBar"
                         style="display: flex; gap: 1em;align-items: center; justify-content:center; margin-top:.3em;">
-                        <a href="" style="font-size: 28px; color:black; text-decoration: none;">Start</a>
+                        <a href="/start/game/{{session.user_id}}" style="font-size: 28px; color:black; text-decoration: none;">Start</a>
+                        {% if session.start %}
                         <h3 style="color: black; font-size: 28px;">|</h3>
                         <a href="" style="font-size: 28px; color:black; text-decoration: none;">Win</a>
                         <h3 style="color: black; font-size: 28px;">|</h3>
                         <a href="" style="font-size: 28px; color:black; text-decoration: none;">Lose</a>
+                        {% endif %}
                     </div>
                     <div class="stats"
                         style="border: 2px solid black;border-radius: 10px;background-color:whitesmoke;padding: 1em;;">
