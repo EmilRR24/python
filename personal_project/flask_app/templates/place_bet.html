@@ -68,12 +68,21 @@
         <div class="leftCol"></div>
         <div class="mainBody" style="margin-top:8em;text-align:center;">
             <!-- Main body items here -->
-            <h1>{{select}}</h1>
-            <h2>{{game.name}}</h2>
-            <img src="{{game.box_art_url}}" alt="box art">
-            <h2 style="margin-top:1em;">Gamer King {{user.user_name}}!</h2>
+            <h1 style="font-weight: bold;">Place Your Bet!</h1>
+            <h2>Gamer King {{user.user_name}}!</h2>
             <h2>Available Points: {{user.total_points}}</h2>
+            <h3 style="font-weight: bold;">{{game.name}}</h3>
+            <img src="{{game.box_art_url}}" alt="box art">
             <form action="/login" method="post" style="width: 12%;margin:1em auto;">
+                {% if select == 'Random' %}
+                <input type="hidden" value="random">
+                {% else %} 
+                <h4>Select {{select}}:</h4>
+                <select name="gamer" id="gamer" style="margin-bottom:.5em;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+                {% endif %}
                 <div class="form-group">
                     <label for="bet" style="margin-bottom:1em;">Amount To Bet:</label>
                     <input type="text" class="form-control" placeholder="Points" name="bet" style="text-align:center;">
