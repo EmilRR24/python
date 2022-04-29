@@ -43,57 +43,82 @@
 
 <body>
     <!-- <div class="container"> -->
-        <div class="header" style="position: fixed;">
-            <div class="headerBody" style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
-                <div class="logo" style=" height:8em;margin-left:2%;" >
-                    <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style=" height:8em;cursor: pointer;" onclick="window.location.href='/'">
-                </div>
-                <div class="navBar" style="display: flex; gap: 1em; ">
-                    <a href="/account/{{session.user_id}}" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
-                    <h3 style="color: white; font-size: 28px;">|</h3>
-                    <a href="/games" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
-                    {% if session.logged_in == True %}
-                    <h3 style="color: white; font-size: 28px;">|</h3>
-                    <a href="/logout" style="font-size: 28px; color:white; text-decoration: none;">Logout</a>
-                    {% endif %}
-                </div>
+    <div class="header" style="position: fixed;">
+        <div class="headerBody"
+            style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
+            <div class="logo" style=" height:8em;margin-left:2%;">
+                <img src="/static/images/Gamer Kings-logos_white.png" alt="logo" style=" height:8em;cursor: pointer;"
+                    onclick="window.location.href='/'">
+            </div>
+            <div class="navBar" style="display: flex; gap: 1em; ">
+                <a href="/account/{{session.user_id}}"
+                    style="font-size: 28px; color:white; text-decoration: none;">Account</a>
+                <h3 style="color: white; font-size: 28px;">|</h3>
+                <a href="/games" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
+                {% if session.logged_in == True %}
+                <h3 style="color: white; font-size: 28px;">|</h3>
+                <a href="/logout" style="font-size: 28px; color:white; text-decoration: none;">Logout</a>
+                {% endif %}
             </div>
         </div>
+    </div>
     <div class="main">
         <div class="leftCol"></div>
         <div class="mainBody" style="margin-top:8em; text-align:center;">
             <!-- Main body items here -->
-            <h1>Game Name</h1>
-            <img src="../static/images/placeholder.png" alt="game"width="200px" >
-            <form action="/login" method="post">
-                <div class="type" style="display:flex;justify-content:space-evenly;padding:1.5em;">
-                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto;">
-                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Random Gamer</label>
+            <h1>{{game.name}}</h1>
+            <img src="{{game.box_art_url}}" alt="game">
+            <h2 style="margin:1em;">Select Bet Type:</h2>
+            <div class="type" style="display:flex;justify-content:space-evenly;padding:1.5em;">
+                <div class="random"
+                    style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto;
+                    border:.125em solid rgb(14, 231, 14);
+                    text-decoration: none;
+                    padding: .5em 1em;
+                    border-radius:.25em;
+                    text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                    box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                    <a href="/bet/select/Random/{{game.name}}" style="text-decoration:none; color:black">
+                        <h3 for="random" style="font-weight: bold;font-size: 24px;margin:1em;color: rgba(5, 185, 5, 0.986);">Random Gamer</h3>
                         <div class="stats">
-                            <p style="margin:0;">Win Conditions</p>
-                            <p style="margin:0;">Adjusted Odds</p>
+                            <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Win Conditions</p>
+                            <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Adjusted Odds</p>
                         </div>
-                        <input type="radio" id="random" name="bet_type" value="random" style="margin: 1em auto;" checked>
+                    </a>
+                </div>
+                <div class="random"
+                    style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto;
+                    border:.125em solid rgb(14, 231, 14);
+                    text-decoration: none;
+                    padding: .5em 1em;
+                    border-radius:.25em;
+                    text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                    box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                <a href="/bet/select/Gamer/{{game.name}}" style="text-decoration:none; color:black">
+                    <h3 for="random" style="font-weight: bold;font-size: 24px;margin:1em;color: rgba(5, 185, 5, 0.986)">Bet On Gamer</h3>
+                    <div class="stats">
+                        <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Win Conditions</p>
+                        <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Description</p>              
                     </div>
-                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto">
-                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Bet On Gamer</label>
+                </a>
+                </div>
+                <div class="random"
+                    style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto;
+                    border:.125em solid rgb(14, 231, 14);
+                    text-decoration: none;
+                    padding: .5em 1em;
+                    border-radius:.25em;
+                    text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                    box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                    <a href="/bet/select/Event/{{game.name}}" style="text-decoration:none; color:black">
+                        <h3 for="random" style="font-weight: bold;font-size: 24px;margin:1em;color: rgba(5, 185, 5, 0.986)">Event Bet</h3>
                         <div class="stats">
-                            <p style="margin:0;">Win Conditions</p>
-                            <p style="margin:0;">Description</p>
+                            <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Win Conditions</p>
+                            <p style="margin:0;color: rgba(5, 185, 5, 0.986)">Adjusted Odds</p>
                         </div>
-                        <input type="radio" id="gamer" name="bet_type" value="gamer" style="margin: 1em auto;">
-                    </div>
-                    <div class="random" style="display:flex;flex-direction: column;justify-content: center;width:20%;height:auto">
-                        <label for="random" style="font-weight: bold;font-size: 24px;margin:1em;">Event Bet</label>
-                        <div class="stats">
-                            <p style="margin:0;">Win Conditions</p>
-                            <p style="margin:0;">Adjusted Odds</p>
-                        </div>
-                        <input type="radio" id="event" name="bet_type" value="event" style="margin: 1em auto;">
-                    </div>
-                </div>               
-                <button type="submit" class="btn btn-primary" style="margin-top:1em; background-color:#129609; border: 0px solid;">Place Bet</button>
-            </form>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="rightCol"></div>
     </div>

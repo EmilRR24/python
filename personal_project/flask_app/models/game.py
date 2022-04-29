@@ -32,11 +32,11 @@ class Game:
     def get_all_with_gamer(cls,data:dict) -> list:
         query = "SELECT * FROM games WHERE gamer_id=%(id)s ORDER BY id DESC;"
         results = connectToMySQL(DATABASE).query_db(query,data)
-        print(results)
+        # print(results)
         games = []
         for u in results:
             games.append( cls(u) )
-        print(games)
+        # print(games)
         return games
 
     # ! UPDATE

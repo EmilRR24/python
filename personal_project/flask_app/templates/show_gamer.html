@@ -122,7 +122,11 @@
                         <input type="hidden" name="gamer_id" value={{session.user_id}}>
                         <div class="form-group">
                             <label for="title">Game Title:</label>
-                            <input type="text" name="title" class="form-control" value="">
+                            <select name="title" id="titles">
+                            {% for title in titles %}
+                                <option value="{{title.name}}">{{title.name}}</option>
+                            {% endfor %}
+                            </select>
                         </div>
                         <input type="submit" value="Start Game" 
                             style="margin-top:1em; border:.125em solid rgb(14, 231, 14);

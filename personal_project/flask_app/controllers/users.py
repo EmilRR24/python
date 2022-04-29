@@ -153,10 +153,52 @@ def gamer_start_page(id):
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-    data ={'id':id}
-    games=Game.get_all_with_gamer(data)
-    tr_count = len(games)
-    return render_template("show_gamer.html", games=games, tr_count=tr_count )
+    id={'id':id}
+    games=get_twitch()['data']
+    data = []
+    for game in games:
+        if game['name'] != "Just Chatting":
+            if game['name'] != "Music":
+                if game['name'] != "Slots":
+                    data.append({'name' : game['name'], 'id' : game['id']})
+    print(games)
+    history=Game.get_all_with_gamer(id)
+    tr_count = len(history)
+    return render_template("show_gamer.html", games=history, tr_count=tr_count, titles=data )
+
+
+# ! ////// PLACE BET //////
+@app.route('/bet/select/<name>')
+def select_bet(name):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    game_name=name
+    games=get_twitch()['data']
+    data = []
+    for game in games:
+        if game['name'] == game_name:
+            data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name'], 'id' : game['id']})
+    game=data[0]
+    # print(game)
+    return render_template("bet_type.html", game=game)
+
+@app.route('/bet/select/<select>/<name>')
+def select_type(select, name):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    select=select
+    game_name=name
+    games=get_twitch()['data']
+    data = []
+    for game in games:
+        if game['name'] == game_name:
+            data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name'], 'id' : game['id']})
+    game=data[0]
+    id={'id':session['user_id']}
+    user=User.get_one(id)
+    return render_template("place_bet.html", game=game, select=select, user=user)
 
 
 # ! ////// CREATE GAME //////
@@ -201,10 +243,10 @@ def games_list():
     data = []
     for game in games:
         if game['name'] != "Just Chatting":
-            # test['box_art_url']=(game['box_art_url'].format(width=250,height=250))
-            # test['name']=(game['name'])
-            data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name']})
-    print(f'data: {data}')
+            if game['name'] != "Music":
+                if game['name'] != "Slots":
+                    data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name'], 'id' : game['id']})
+    # print(f'data: {data}')
     return render_template('games_list.html', games=data)
 
 @app.route('/account/')

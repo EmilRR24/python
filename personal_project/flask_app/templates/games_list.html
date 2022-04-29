@@ -72,7 +72,7 @@
             <div class="mainBottom" style="display : flex; flex-wrap: wrap; justify-content: start;">
                 {% for game in games %}
                 <div class="game">
-                    <a href="">
+                    <a href="/bet/select/{{game.name}}">
                         <img src="{{game.box_art_url}}" alt="">
                         <p style="text-align:center;">{{game.name}}</p>
                     </a>
