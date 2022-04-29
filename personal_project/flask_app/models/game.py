@@ -10,36 +10,39 @@ class Game:
     def __init__(self, data:dict) -> None:
         self.id = data['id']
         self.name = data['name']
+        self.title = data['title']
+        self.result = data['result']
+        self.gamer_id = data['gamer_id']
         self.created_at = data['created_at']
         self.completed_at = data['completed_at']
-        self.gamer_id = data['gamer_id']
         # if "total_points" in data:
         #     self.total_points = data['total_points']
 
 
     # ! CREATE
     @classmethod
-    def save_game(cls, data:dict) -> int:
-        query = "INSERT INTO game (stream_link,user_id) VALUES (%(stream_link)s,%(user_id)s);"
+    def start_game(cls, data:dict) -> int:
+        query = "INSERT INTO games (name,title,gamer_id) VALUES (%(name)s,%(title)s,%(gamer_id)s);"
         result = connectToMySQL(DATABASE).query_db(query,data)
         print(result)
         return result
 
     # ! READ/RETRIEVE ALL
     @classmethod
-    def get_all(cls) -> list:
-        query = "SELECT * FROM transaction;"
-        results = connectToMySQL(DATABASE).query_db(query)
-        transactions = []
+    def get_all_with_gamer(cls,data:dict) -> list:
+        query = "SELECT * FROM games WHERE gamer_id=%(id)s ORDER BY id DESC;"
+        results = connectToMySQL(DATABASE).query_db(query,data)
+        print(results)
+        games = []
         for u in results:
-            transactions.append( cls(u) )
-        return transactions
+            games.append( cls(u) )
+        print(games)
+        return games
 
     # ! UPDATE
-
     @classmethod
-    def update_stream(cls,data:dict) -> int:
-        query = "UPDATE gamer SET stream_link=%(stream_link)s,updated_at=NOW() WHERE user_id = %(user_id)s;"
+    def game_complete(cls,data:dict) -> int:
+        query = "UPDATE games SET completed_at=NOW(),result=%(result)s WHERE id = %(id)s;"
         result =  connectToMySQL(DATABASE).query_db(query,data)
         print(result)
         return result
@@ -47,7 +50,8 @@ class Game:
     # ! READ/RETRIEVE ONE
     @classmethod
     def get_one_with_gamer(cls,data:dict) -> object:
-        query  = "SELECT * FROM gamer WHERE user_id = %(id)s";
+        query  = "SELECT * FROM games WHERE gamer_id = %(id)s ORDER BY id DESC;"
         result = connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
         return cls(result[0])
 

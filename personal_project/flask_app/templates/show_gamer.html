@@ -46,11 +46,13 @@
     <div class="header" style="position: fixed;">
         <div class="headerBody"
             style="height: 8em; display: flex; align-items: center; justify-content: space-between; padding-left: 8%;padding-right: 11%;width: 100%;">
-            <div class="logo" style=" height:8em;margin-left:2%;" >
-                <img src="../static/images/Gamer Kings-logos_white.png" alt="logo" style=" height:8em;cursor: pointer;" onclick="window.location.href='/'">
+            <div class="logo" style=" height:8em;margin-left:2%;">
+                <img src="/static/images/Gamer Kings-logos_white.png" alt="logo" style=" height:8em;cursor: pointer;"
+                    onclick="window.location.href='/'">
             </div>
             <div class="navBar" style="display: flex; gap: 1em; ">
-                <a href="/account/{{session.user_id}}" style="font-size: 28px; color:white; text-decoration: none;">Account</a>
+                <a href="/account/{{session.user_id}}"
+                    style="font-size: 28px; color:white; text-decoration: none;">Account</a>
                 <h3 style="color: white; font-size: 28px;">|</h3>
                 <a href="/games" style="font-size: 28px; color:white; text-decoration: none;">Games</a>
                 {% if session.logged_in == True %}
@@ -67,42 +69,119 @@
             <h1 style="text-align: center; margin-top: .5em;">Gamer King {{session.user_name}}!</h1>
             <div class="bodyBottom" style="display: flex; justify-content: space-between; margin: 2em;">
                 <div class="leftBody"
-                    style="background-color:rgba(0, 0, 255, 0); width:30%; height: 30%; text-align:center;margin-right: 1em;">
-                    <form action="/gamer/start/{{session.user_id}}" method="post" class="col-6 mx-auto"">
-                        <div class="form-group">
+                    style="background-color:rgba(0, 0, 255, 0); width:30%; height: 30%; text-align:center;margin:1.5em;">
+                    <form action="/gamer/start/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                        <div class=" form-group">
                             <label for="introduction">Introduction:</label>
                             <textarea class="form-control" name="introduction" rows="3"
                                 style="resize: none;">{{session.introduction}}</textarea>
-                        </div>
-                        <input type="submit" value="Update" class="btn btn-success"
-                            style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                            <input type="submit" value="Update" class="btn btn-success"
+                                style="margin-top:1em; background-color:#129609; border: 0px solid;">
                     </form>
-                    <div class="navBar"
-                        style="display: flex; gap: 1em;align-items: center; justify-content:center; margin-top:.3em;">
-                        <a href="/start/game/{{session.user_id}}" style="font-size: 28px; color:black; text-decoration: none;">Start</a>
-                        {% if session.start %}
-                        <h3 style="color: black; font-size: 28px;">|</h3>
-                        <a href="" style="font-size: 28px; color:black; text-decoration: none;">Win</a>
-                        <h3 style="color: black; font-size: 28px;">|</h3>
-                        <a href="" style="font-size: 28px; color:black; text-decoration: none;">Lose</a>
-                        {% endif %}
-                    </div>
-                    <div class="stats"
-                        style="border: 2px solid black;border-radius: 10px;background-color:whitesmoke;padding: 1em;;">
-                        <p>Game stats</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci tempora placeat quae
-                            laboriosam dolorum voluptatibus eum deleniti, cumque ea rem voluptas recusandae eligendi,
-                            alias in, veritatis nobis error ipsa similique.</p>
-                    </div>
                 </div>
-                <div class="rightBody"
-                    style="background-color: rgba(255, 0, 0, 0); width: 70%; height: 70%; text-align:center;">
-                    <img src="../static/images/T1-Faker-2022-1.jpg"
-                        alt="streamer" style="width: 80%">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <h2 style="margin-top:2em;">{{message}}</h2>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <h4 style="margin:1em;">Game ID: {{session.game_id}}</h4>
+                <div class="navBar"
+                    style="display: flex; gap: 10em;align-items: center; justify-content:center; margin:2em;">
+                    {% if session.game_id %}
+                    <form action="/complete/game/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                        <input type="hidden" name="result" value="WON">
+                        <input type="hidden" name="id" value={{session.game_id}}>
+                        <input type="submit" value="WON" 
+                            style="margin-top:1em; width: 8em;
+                            border:.125em solid rgb(14, 231, 14);
+                            color: rgba(5, 185, 5, 0.986);
+                            text-decoration: none;
+                            padding: .5em 1em;
+                            border-radius:.25em;
+                            text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                            box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                    </form>
+                    <form action="/complete/game/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                        <input type="hidden" name="result" value="LOST">
+                        <input type="hidden" name="id" value={{session.game_id}}>
+                        <input type="submit" value="LOST" 
+                            style="margin-top:1em; width:8em;
+                            border:.125em solid rgb(231, 14, 14);
+                            color: rgba(185, 5, 5, 0.986);
+                            text-decoration: none;
+                            padding: .5em 1em;
+                            border-radius:.25em;
+                            text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(223, 21, 21);
+                            box-shadow:inset 0 0 .5em rgb(250, 27, 27), 0 0 .5em rgb(250, 27, 27);">
+                    </form>
+                    {% else %}
+                    <form action="/start/game/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                        <input type="hidden" name="name" value={{session.user_name}}>
+                        <input type="hidden" name="gamer_id" value={{session.user_id}}>
+                        <div class="form-group">
+                            <label for="title">Game Title:</label>
+                            <input type="text" name="title" class="form-control" value="">
+                        </div>
+                        <input type="submit" value="Start Game" 
+                            style="margin-top:1em; border:.125em solid rgb(14, 231, 14);
+                            color: rgba(5, 185, 5, 0.986);
+                            text-decoration: none;
+                            padding: .5em 1em;
+                            border-radius:.25em;
+                            text-shadow:0 0 .2em #FFF7, 0 0 .3em rgb(21, 223, 21);
+                            box-shadow:inset 0 0 .5em rgb(27, 250, 27), 0 0 .5em rgb(27, 250, 27);">
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="stats"
+                    style="border: 2px solid black;border-radius: 10px;background-color:whitesmoke;padding: 1em;margin-top: 1em;">
+                    <p>Game stats</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci tempora placeat quae
+                        laboriosam dolorum voluptatibus eum deleniti, cumque ea rem voluptas recusandae eligendi,
+                        alias in, veritatis nobis error ipsa similique.</p>
                 </div>
             </div>
+            <div class="rightBody"
+                style="background-color: rgba(255, 0, 0, 0); width: 70%; height: 70%; text-align:center;">
+                <img src="/static/images/T1-Faker-2022-1.jpg" alt="streamer" style="width: 80%">
+                <table class="table" style="border: .2em solid black;">
+                    <h2 style="border-top: .1em solid black;border-left: .1em solid black;border-right: .1em solid black;margin-bottom: 0%;margin-top:2em;">History</h2>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Game #</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Result</th>
+                        <th scope="col">Game Completed</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if tr_count > 5 %}
+                        {% for ind in range(5) %}
+                        <tr>
+                            <td>{{games[ind].id}}</td>
+                            <td>{{games[ind].title}}</td>
+                            <td>{{games[ind].result}}</td>
+                            <td>{{games[ind].completed_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for game in games%}
+                        <tr>
+                            <td>{{game.id}}</td>
+                            <td>{{game.title}}</td>
+                            <td>{{game.result}}</td>
+                            <td>{{game.completed_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="rightCol"></div>
+    </div>
+    <div class="rightCol"></div>
     </div>
     <!-- </div> -->
 </body>

@@ -15,6 +15,7 @@ class User:
         self.last_name = data['last_name']
         self.email = data['email']
         self.user_name = data['user_name']
+        self.stream_link = data['stream_link']
         self.password = data['password']
         self.total_points = data['total_points']
         self.created_at = data['created_at']
@@ -68,7 +69,7 @@ class User:
     # ! CREATE
     @classmethod
     def save(cls, data:dict) -> int:
-        query = "INSERT INTO users (first_name,last_name,email,user_name,password,total_points) VALUES (%(first_name)s,%(last_name)s,%(email)s,%(user_name)s,%(password)s,%(total_points)s);"
+        query = "INSERT INTO users (first_name,last_name,email,user_name,password,total_points,stream_link) VALUES (%(first_name)s,%(last_name)s,%(email)s,%(user_name)s,%(password)s,%(total_points)s,%(stream_link)s);"
         result = connectToMySQL(DATABASE).query_db(query,data)
         return result
 
@@ -118,6 +119,17 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
+    @classmethod
+    def get_by_stream_link(cls,data:dict) -> object or bool:
+        query = "SELECT * FROM users WHERE stream_link = %(stream_link)s;"
+        result = connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        # Didn't find a matching user_name
+        if len(result) < 1:
+            return False
+        return cls(result[0])
+
+
 
 
     # ! UPDATE
@@ -133,7 +145,12 @@ class User:
         print(result)
         return result
     
-
+    @classmethod
+    def update_stream(cls,data:dict) -> int:
+        query = "UPDATE users SET stream_link=%(stream_link)s,updated_at=NOW() WHERE id = %(user_id)s;"
+        result =  connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        return result
 
     # ! DELETE
     @classmethod

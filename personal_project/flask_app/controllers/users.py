@@ -6,8 +6,8 @@ bcrypt = Bcrypt(app)     # we are creating an object called bcrypt,
                         # which is made by invoking the function Bcrypt with our app as an argument     
 from flask_app.models.user import User
 from flask_app.models.transaction import Transaction
-from flask_app.models.gamer import Gamer
 from flask_app.models.game import Game
+from flask_app.models.twitch_api import get_twitch
 
 # ! ////// REGISTER WITH BCRYPT  //////
 @app.route('/register/user', methods=['POST'])
@@ -21,6 +21,9 @@ def register():
     if User.get_by_user_name(request.form):
         flash("User Name is taken!")
         return redirect('/register')
+    if User.get_by_stream_link(request.form):
+        flash("Stream Link is already registered!")
+        return redirect('/register')
     # create the hash
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     print(pw_hash)
@@ -30,14 +33,17 @@ def register():
         "last_name": request.form['last_name'],
         "email": request.form['email'],
         "user_name": request.form['user_name'],
+        "stream_link": request.form['stream_link'],
         "password" : pw_hash,
         "total_points": 0,
     }
+
     # Call the save @classmethod on User
     user_id = User.save(data)
     # store user id into session
     session['user_id'] = user_id
     session['user_name'] = request.form.get('user_name')
+    session['stream_link'] = request.form.get('stream_link')
     session['logged_in'] = True
     flash("Account Created! Please Log In!")
     return redirect(f'/account/{user_id}')
@@ -69,6 +75,7 @@ def logout():
 # ! ////// CREATE  //////
 # TODO CREATE REQUIRES TWO ROUTES:
 # TODO ONE TO DISPLAY THE FORM:
+# ! ////// ADD POINTS//////
 @app.route('/account/add/<int:id>',methods=['POST'])
 def add_points(id):
     if 'user_id' not in session:
@@ -91,6 +98,7 @@ def add_points(id):
     User.update_points(amount)
     return redirect(f'/add/{data}')
 
+# ! ////// SPEND POINTS //////
 @app.route('/account/spend/<int:id>',methods=['POST'])
 def spend_points(id):
     if 'user_id' not in session:
@@ -130,32 +138,47 @@ def register_gamer(id):
     session['stream_link'] = request.form['stream_link']
     return redirect(f'/start/{data}')
 
+# ! ////// GAMER START/GAMER UPDATE //////
 @app.route('/gamer/start/<int:id>',methods=['POST'])
 def gamer_start(id):
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-
-    gamer_data = {
-        "introduction": request.form['introduction'],
-    }
     # Call the save @classmethod on User
     session['introduction'] = request.form['introduction']
-    return redirect("/gamer/start")
+    return redirect(f'/gamer/show/{id}')
 
-@app.route('/gamer/start')
-def gamer_start_page():
+@app.route('/gamer/show/<int:id>')
+def gamer_start_page(id):
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-    return render_template("show_gamer.html")
+    data ={'id':id}
+    games=Game.get_all_with_gamer(data)
+    tr_count = len(games)
+    return render_template("show_gamer.html", games=games, tr_count=tr_count )
 
-# TODO ONE TO HANDLE THE DATA FROM THE FORM
-@app.route('/user/create',methods=['POST'])
-def create():
-    print(request.form)
-    User.save(request.form)
-    return redirect('/users')
+
+# ! ////// CREATE GAME //////
+@app.route('/start/game/<int:id>',methods=['POST'])
+def start_game(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    Game.start_game(request.form)
+    data = {'id': id}
+    game_in_db = Game.get_one_with_gamer(data)
+    flash('Game Started!')
+    session['game_id'] = game_in_db.id
+    return redirect(f"/gamer/show/{id}")
+
+# ! ////// COMPLETE GAME //////
+@app.route('/complete/game/<int:id>',methods=['POST'])
+def complete_game(id):
+    Game.game_complete(request.form)
+    flash('Game Completed!')
+    session.pop('game_id')
+    return redirect(f'/gamer/show/{id}')
 
 # ! ////// READ/RETRIEVE //////
 # TODO ROOT ROUTE
@@ -174,7 +197,15 @@ def games_list():
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-    return render_template('games_list.html')
+    games=get_twitch()['data']
+    data = []
+    for game in games:
+        if game['name'] != "Just Chatting":
+            # test['box_art_url']=(game['box_art_url'].format(width=250,height=250))
+            # test['name']=(game['name'])
+            data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name']})
+    print(f'data: {data}')
+    return render_template('games_list.html', games=data)
 
 @app.route('/account/')
 def account():
@@ -230,12 +261,9 @@ def spend(id):
 
 @app.route('/start/<int:id>')
 def start(id):
-    data ={ 
-        "id":id
-    }
-    gamer_in_db = Gamer.get_one_with_gamer(data)
-    session['stream_link'] = gamer_in_db.stream_link
-    return render_template("gamer_register.html",user=User.get_one(data))
+    print(id)
+    data = {'id':id}
+    return render_template("gamer_register.html", gamer=User.get_one(data))
 
 # ! ///// UPDATE /////
 # TODO UPDATE REQUIRES TWO ROUTES
@@ -250,15 +278,15 @@ def edit_stream(id):
         "stream_link": request.form['stream_link'],
     }
     print(user_data)
-    Gamer.update_stream(user_data)
+    if User.get_by_stream_link(request.form):
+        flash("Stream Link is already registered!")
+        return redirect('/register')
+    User.update_stream(user_data)
     session['stream_link'] = request.form['stream_link']
     return redirect(f'/start/{id}')
 
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
-@app.route('/user/update',methods=['POST'])
-def update():
-    User.update(request.form)
-    return redirect('/users')
+
 
 # ! ///// DELETE //////
 @app.route('/account/destroy/<int:id>')
