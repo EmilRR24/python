@@ -58,14 +58,6 @@ class User:
             is_valid = False
         return is_valid
 
-    @staticmethod
-    def validate_points(user:dict) -> bool:
-        is_valid = True
-        if user['points'] > user['total_points']:
-            flash("Not Enough Points In Your Account!")
-            is_valid = False
-        return is_valid
-
     # ! CREATE
     @classmethod
     def save(cls, data:dict) -> int:

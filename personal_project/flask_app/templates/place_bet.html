@@ -73,20 +73,20 @@
             <h2>Available Points: {{user.total_points}}</h2>
             <h3 style="font-weight: bold;">{{game.name}}</h3>
             <img src="{{game.box_art_url}}" alt="box art">
-            <form action="/login" method="post" style="width: 12%;margin:1em auto;">
+            <form action="/start/game/{{select}}/{{game.name}}" method="post" style="width: 12%;margin:1em auto;">
                 {% if select == 'Random' %}
-                <input type="hidden" value="random">
+                <input type="hidden" value="1" name="game_id">
                 {% else %} 
                 <h4>Select {{select}}:</h4>
-                <select name="gamer" id="gamer" style="margin-bottom:.5em;">
+                <select name="gamer" id="game_id" style="margin-bottom:.5em;">
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </select>
                 {% endif %}
                 <div class="form-group">
                     <label for="bet" style="margin-bottom:1em;">Amount To Bet:</label>
-                    <input type="text" class="form-control" placeholder="Points" name="bet" style="text-align:center;">
-                    <select name="bet" id="bet" style="margin-top:1em;">
+                    <input type="text" class="form-control" placeholder="Points" name="bet_amount" style="text-align:center;">
+                    <select name="action" id="bet" style="margin-top:1em;">
                         <option value="WIN">WIN</option>
                         <option value="LOSE">LOSE</option>
                     </select>

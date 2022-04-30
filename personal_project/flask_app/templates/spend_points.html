@@ -66,8 +66,8 @@
             <!-- Main body items here -->
             <h1 style="text-align: center; margin-top: .5em;">{{user.user_name}}</h1>
             <div class="editUser">
+                <h2 class="text-center">Spend Points</h2>
                 <form action="/account/spend/{{session.user_id}}" method="post" class="col-6 mx-auto">
-                    <h2 class="text-center">Spend Points</h2>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     {% for message in messages %}

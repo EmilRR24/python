@@ -7,6 +7,7 @@ bcrypt = Bcrypt(app)     # we are creating an object called bcrypt,
 from flask_app.models.user import User
 from flask_app.models.transaction import Transaction
 from flask_app.models.game import Game
+from flask_app.models.bet import Bet
 from flask_app.models.twitch_api import get_twitch
 
 # ! ////// REGISTER WITH BCRYPT  //////
@@ -70,7 +71,7 @@ def login():
 def logout():
     session.clear()
     flash('Logged Out')
-    return render_template("home.html")
+    return redirect("/")
 
 # ! ////// CREATE  //////
 # TODO CREATE REQUIRES TWO ROUTES:
@@ -104,9 +105,11 @@ def spend_points(id):
     if 'user_id' not in session:
         flash('Please login!')
         return redirect('/')
-    data = id
-    if not User.validate_points(request.form):
-        return redirect(f'/spend/{data}')
+    data = {'id':id}
+    user=User.get_one(data)
+    if int(request.form['points']) > user.total_points:
+        flash("Not Enough Points In Your Account!")
+        return redirect(f'/spend/{id}')
     user_data = {
         "user_id": request.form['user_id'],
         "total_points": request.form['total_points'],
@@ -119,24 +122,8 @@ def spend_points(id):
         "amount" : (int(request.form['total_points'])-int(request.form['points'])),
         "user_id" : int(request.form['user_id'])
     }
-    print("amount is",amount)
     User.update_points(amount)
-    return redirect(f'/spend/{data}')
-
-@app.route('/gamer/register/<int:id>',methods=['POST'])
-def register_gamer(id):
-    if 'user_id' not in session:
-        flash('Please login!')
-        return redirect('/')
-    data = id
-    gamer_data = {
-        "user_id": request.form['user_id'],
-        "stream_link": request.form['stream_link'],
-    }
-    # Call the save @classmethod on User
-    Gamer.save_gamer(gamer_data)
-    session['stream_link'] = request.form['stream_link']
-    return redirect(f'/start/{data}')
+    return redirect(f'/spend/{id}')
 
 # ! ////// GAMER START/GAMER UPDATE //////
 @app.route('/gamer/start/<int:id>',methods=['POST'])
@@ -199,6 +186,26 @@ def select_type(select, name):
     id={'id':session['user_id']}
     user=User.get_one(id)
     return render_template("place_bet.html", game=game, select=select, user=user)
+
+@app.route('/start/game/<select>/<name>',methods=['POST'])
+def place_bet(select, name):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    select=select
+    game_name=name
+    games=get_twitch()['data']
+    data = []
+    for game in games:
+        if game['name'] == game_name:
+            data.append({'box_art_url': game['box_art_url'].format(width=250,height=250),'name' : game['name'], 'id' : game['id']})
+    game=data[0]
+    id={'id':session['user_id']}
+    user=User.get_one(id)
+    bet=Bet.save_bet(request.form)
+    return render_template("show_bet.html", game=game, select=select, user=user, bet=bet)
+
+
 
 
 # ! ////// CREATE GAME //////
