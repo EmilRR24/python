@@ -335,6 +335,25 @@ def edit_stream(id):
     session['stream_link'] = request.form['stream_link']
     return redirect(f'/start/{id}')
 
+@app.route('/user/update/<int:id>',methods=['POST'])
+def edit_user(id):
+    if 'user_id' not in session:
+        flash('Please login!')
+        return redirect('/')
+    user_data = {
+        "id": id,
+        "first_name": request.form['first_name'],
+        "last_name": request.form['last_name'],
+        "user_name": request.form['user_name'],
+    }
+    if User.get_by_user_name(request.form):
+        flash("User Name is already registered!")
+        return redirect(f'/account/{id}')
+    User.update_user(user_data)
+    session['user_name'] = request.form.get('user_name')
+    flash("Account Updated!")
+    return redirect(f'/account/{id}')
+
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
 # ! ///// DELETE //////
 @app.route('/account/destroy/<int:id>')

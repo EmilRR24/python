@@ -34,6 +34,15 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
+
+    def get_by_user_name(cls,data:dict) -> object or bool:
+        query = "SELECT * FROM users WHERE user_name = %(user_name)s;"
+        result = connectToMySQL(DATABASE).query_db(query,data)
+        print(result)
+        # Didn't find a matching user
+        if len(result) < 1:
+            return False
+        return cls(result[0])
     
     @staticmethod
     def validate(user:dict) -> bool:
@@ -126,7 +135,7 @@ class User:
 
     # ! UPDATE
     @classmethod
-    def update(cls,data:dict) -> int:
+    def update_user(cls,data:dict) -> int:
         query = "UPDATE users SET first_name=%(first_name)s,last_name=%(last_name)s,email=%(email)s,user_name=%(user_name)s,updated_at=NOW() WHERE id = %(id)s;"
         return connectToMySQL(DATABASE).query_db(query,data)
 
