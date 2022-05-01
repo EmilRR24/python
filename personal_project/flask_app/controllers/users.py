@@ -331,12 +331,11 @@ def edit_stream(id):
         flash("Stream Link is already registered!")
         return redirect('/register')
     User.update_stream(user_data)
+    flash("Stream Link Updated!")
     session['stream_link'] = request.form['stream_link']
     return redirect(f'/start/{id}')
 
 # TODO ONE TO HANDLE THE DATA FROM THE FORM
-
-
 # ! ///// DELETE //////
 @app.route('/account/destroy/<int:id>')
 def destroy(id):

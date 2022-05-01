@@ -33,21 +33,21 @@
                 <!-- Main body items here -->
                 <h1 style="text-align: center; margin-top: .5em;">Welcome {{session.user_name}}!</h1>
                 <div class="bodyBottom" style="display: flex;flex-direction: column; justify-content: space-evenly; margin: 2em 0;">
-                        {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                        {% for message in messages %}
-                        <p>{{message}}</p>
-                        {% endfor %}
-                        {% endif %}
-                        {% endwith %}
-                        <h2 style="text-align:center;">Start a Game!</h2>
-                        <form action="/gamer/start/{{session.user_id}}" method="post" class="col-6 mx-auto">
-                            <div class="form-group">
-                                <label for="introduction" >Introduction:</label>
-                                <textarea class="form-control" name="introduction" rows="3" style="resize: none;" placeholder="Quick Introduction">{{session.introduction}}</textarea>
-                            </div>
-                            <input type="submit" value="Start Game" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
-                        </form>
+                    <h2 style="text-align:center;">Start a Game!</h2>
+                    <form action="/gamer/start/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                        <div class="form-group">
+                            <label for="introduction" >Introduction:</label>
+                            <textarea class="form-control" name="introduction" rows="3" style="resize: none;" placeholder="Quick Introduction">{{session.introduction}}</textarea>
+                        </div>
+                        <input type="submit" value="Start Game" class="btn btn-success" style="margin-top:1em; background-color:#129609; border: 0px solid;">
+                    </form>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <h3 style="text-align:center">{{message}}</h3>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
                         {% if session.stream_link %}
                         <div class="updateGamer">
                             <form action="/gamer/update/{{session.user_id}}" method="post" class="col-6 mx-auto">
@@ -62,7 +62,7 @@
                         </div>
                         {% else %}
                         <div class="registerGamer">
-                            <form action="/gamer/register/{{session.user_id}}" method="post" class="col-6 mx-auto">
+                            <form action="/gamer/update/{{session.user_id}}" method="post" class="col-6 mx-auto">
                                 <h2 class="text-center">Become a Gamer King</h2>
                                 <p style="text-align:center;">Stream Link is required to become a Gamer King and host games.</p>
                                 <input type="hidden" name="user_id" value={{session.user_id}}>
