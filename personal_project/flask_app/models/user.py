@@ -103,24 +103,6 @@ class User:
         return user
 
     @classmethod
-    def get_by_email(cls,data:dict) -> object or bool:
-        query = "SELECT * FROM users WHERE email = %(email)s;"
-        result = connectToMySQL(DATABASE).query_db(query,data)
-        print(result)
-        # Didn't find a matching email
-        if len(result) < 1:
-            return False
-        return cls(result[0])
-    @classmethod
-    def get_by_user_name(cls,data:dict) -> object or bool:
-        query = "SELECT * FROM users WHERE user_name = %(user_name)s;"
-        result = connectToMySQL(DATABASE).query_db(query,data)
-        print(result)
-        # Didn't find a matching user_name
-        if len(result) < 1:
-            return False
-        return cls(result[0])
-    @classmethod
     def get_by_stream_link(cls,data:dict) -> object or bool:
         query = "SELECT * FROM users WHERE stream_link = %(stream_link)s;"
         result = connectToMySQL(DATABASE).query_db(query,data)
@@ -129,9 +111,6 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
-
-
-
 
     # ! UPDATE
     @classmethod
