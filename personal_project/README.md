@@ -1,4 +1,12 @@
-# Flask Checklist
+# Gamer Kings
+Gamer Kings is an media website that involves the use of live streaming and Esporting events as a betting platform. The backend is built with Python and Flask, and the frontend design with the use of Bootstrap and jQuery gives the user a more dynamic and responsive experience.
+## Features
+- Login and Registration with validations using bcrypt and redux
+- Leveraged Twitch API to dynamically filter top gaming categories currently being live streamed
+- Implemented CSS skills with the addition of jQuery and Bootstrap table system to enhance the user experience
+- Filter records by selected category from the imported API
+
+##### Flask Checklist
 
 - [x] create a separate directory for each app.
 - [x] inside the directory for the app, run:
