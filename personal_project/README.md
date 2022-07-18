@@ -5,6 +5,8 @@ Gamer Kings is a media website that involves the use of live streaming and Espor
 - Leveraged Twitch API to dynamically filter top gaming categories currently being live streamed
 - Implemented CSS skills with the addition of jQuery and Bootstrap table system to enhance the user experience
 - Filter records by selected category from the imported API
+## Author
+Emil Ramirez: https://github.com/EmilRR24
 
 ##### Flask Checklist
 
