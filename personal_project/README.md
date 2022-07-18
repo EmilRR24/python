@@ -1,5 +1,5 @@
 # Gamer Kings
-Gamer Kings is an media website that involves the use of live streaming and Esporting events as a betting platform. The backend is built with Python and Flask, and the frontend design with the use of Bootstrap and jQuery gives the user a more dynamic and responsive experience.
+Gamer Kings is a media website that involves the use of live streaming and Esporting events as a betting platform. The backend is built with Python and Flask, and the frontend design with the use of Bootstrap and jQuery gives the user a more dynamic and responsive experience.
 ## Features
 - Login and Registration with validations using bcrypt and redux
 - Leveraged Twitch API to dynamically filter top gaming categories currently being live streamed
